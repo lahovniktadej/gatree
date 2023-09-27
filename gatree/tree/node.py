@@ -117,16 +117,15 @@ class Node:
             return 0
         return Node.size_helper(n.left) + Node.size_helper(n.right) + 1
 
-    def clear_evaluation(self, num_values):
-        """ Clears the evaluation matrix of this node and all its children
-
-        :param num_values: number of possible class values
+    def clear_evaluation(self):
+        """ Clears the evaluation of this node and all its children
         """
-        self.matrix = [[0.0] * num_values for _ in range(num_values)]
+        self.y_true = []
+        self.y_pred = []
         if self.left:
-            self.left.clear_evaluation(num_values)
+            self.left.clear_evaluation()
         if self.right:
-            self.right.clear_evaluation(num_values)
+            self.right.clear_evaluation()
 
     def is_evaluated(self):
         """ Returns true if this node and all its children are evaluated
