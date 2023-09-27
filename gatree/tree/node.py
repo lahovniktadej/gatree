@@ -81,7 +81,7 @@ class Node:
         :return: depth of this node
         """
         if self.parent is None:
-            return 0
+            return 1
         return self.parent.depth() + 1
 
     def max_depth(self):
@@ -89,7 +89,7 @@ class Node:
 
         :return: maximum depth of the tree
         """
-        return self.max_depth_helper(self.get_root()) - 1
+        return self.max_depth_helper(self.get_root())
 
     @staticmethod
     def max_depth_helper(n):
