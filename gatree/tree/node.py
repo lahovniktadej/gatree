@@ -1,6 +1,3 @@
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-
-
 class Node:
     def __init__(self, att_index=None, att_value=None):
         """ Initializes the node with the given parameters
@@ -18,7 +15,8 @@ class Node:
             self.att_value = att_value
 
             self.fitness = None
-            self.matrix = None
+            self.y_true = []
+            self.y_pred = []
 
     @staticmethod
     def copy(node):
@@ -32,7 +30,8 @@ class Node:
         copy.left = node.left
         copy.right = node.right
         copy.fitness = node.fitness
-        copy.matrix = node.matrix
+        copy.y_true = node.y_true
+        copy.y_pred = node.y_pred
         return copy
 
     def set_left(self, n):
@@ -146,7 +145,7 @@ class Node:
         """ Predicts the class of the given instance
 
         :param X: instance to be predicted
-        :param y: true class of the instance
+        :param y: actual class of the given instance
         :return: predicted class
         """
         try:
@@ -155,13 +154,14 @@ class Node:
 
             if self.att_index != -1:
                 if X[self.att_index] > self.att_value:
-                    predicted = self.left.predict_one(X, y)
-                    self.matrix[actual][predicted] += 1
+                    if self.left is not None:
+                        predicted = self.left.predict_one(X, y)
                 else:
-                    predicted = self.right.predict_one(X, y)
-                    self.matrix[actual][predicted] += 1
-            else:
-                self.matrix[actual][predicted] += 1
+                    if self.right is not None:
+                        predicted = self.right.predict_one(X, y)
+
+            self.y_true.append(actual)
+            self.y_pred.append(predicted)
 
             return predicted
         except Exception as e:
@@ -221,27 +221,31 @@ class Node:
 
 
 if __name__ == "__main__":
-    # Example initialization, replace with your actual initialization
-    n = Node(0, 0.0)
-    # Example matrix, replace with your actual matrix
-    n.matrix = [[2.0, 3.0], [1.0, 5.0]]
+    from sklearn.metrics import accuracy_score
 
-    print(n.matrix)
+    # Tree generation
+    left_child = Node(att_index=1, att_value=3)
+    left_grandchild1 = Node(att_index=2, att_value=2)
+    left_grandchild2 = Node(att_index=2, att_value=4)
+    left_child.set_left(left_grandchild1)
+    left_child.set_right(left_grandchild2)
 
-    print("Accuracy:    ", n.get_accuracy())
-    print("Weighted acc:", n.get_weighted_accuracy())
-    print("Average acc: ", n.get_avg_accuracy())
-    print("Min acc:     ", n.get_min_class_accuracy())
-    print("Max acc:     ", n.get_max_class_accuracy())
-    print("Precision:   ", n.get_precision())
-    print("Recall:      ", n.get_recall())
-    print("M Fscore:    ", n.get_multiplicated_fscore())
-    print("Avg Fscore:  ", n.get_average_fscore())
-    print("Weighted Fs: ", n.get_weighted_fscore())
-    print()
-    print("Class acc:   ", n.get_class_accuracies())
-    print("Precisions:  ", n.get_precisions())
-    print("Recalls:     ", n.get_recalls())
-    print("Fscores:     ", n.get_fscores())
+    right_child = Node(att_index=1, att_value=7)
+    right_grandchild1 = Node(att_index=2, att_value=6)
+    right_grandchild2 = Node(att_index=2, att_value=8)
+    right_child.set_left(right_grandchild1)
+    right_child.set_right(right_grandchild2)
 
-    print("DEPTH: ", n.max_depth())
+    parent_node = Node(att_index=0, att_value=5)
+    parent_node.set_left(left_child)
+    parent_node.set_right(right_child)
+
+    # Create instance and predict class
+    instance = [6, 4, 5]
+    actual_class = 1
+    predicted_class = parent_node.predict_one(instance, actual_class)
+
+    # Calculate accuracy
+    accuracy = accuracy_score(parent_node.y_true, parent_node.y_pred)
+    print(f"Predicted class for instance: {parent_node.y_pred}")
+    print(f"Accuracy: {accuracy}")
