@@ -142,22 +142,23 @@ class Node:
 
         return left_evaluated and right_evaluated
 
-    def predict_one(self, instance):
+    def predict_one(self, X, y):
         """ Predicts the class of the given instance
 
-        :param instance: instance to be predicted
+        :param X: instance to be predicted
+        :param y: true class of the instance
         :return: predicted class
         """
         try:
-            actual = int(instance[-1])
+            actual = int(y)
             predicted = int(self.att_value)
 
             if self.att_index != -1:
-                if instance[self.att_index] > self.att_value:
-                    predicted = self.left.predict_one(instance)
+                if X[self.att_index] > self.att_value:
+                    predicted = self.left.predict_one(X, y)
                     self.matrix[actual][predicted] += 1
                 else:
-                    predicted = self.right.predict_one(instance)
+                    predicted = self.right.predict_one(X, y)
                     self.matrix[actual][predicted] += 1
             else:
                 self.matrix[actual][predicted] += 1
