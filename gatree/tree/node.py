@@ -27,7 +27,13 @@ class Node:
         :param node: node to be copied
         :return: deep copy of the given node
         """
-        return node
+        copy = Node(node.att_index, node.att_value)
+        copy.parent = node.parent
+        copy.left = node.left
+        copy.right = node.right
+        copy.fitness = node.fitness
+        copy.matrix = node.matrix
+        return copy
 
     def set_left(self, n):
         """ Sets the left child of this node to the given node
