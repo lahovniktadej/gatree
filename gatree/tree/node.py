@@ -65,7 +65,7 @@ class Node:
 
         :return: list of children of this node
         """
-        return [self.left, self.right]
+        return self.left, self.right
 
     def get_leaves(self):
         """ Returns the leaves of this node
