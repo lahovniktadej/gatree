@@ -132,13 +132,13 @@ class Node:
 
         :return: true if this node and all its children are evaluated
         """
-        if self.matrix is None:
+        if len(self.y_pred) == 0 and len(self.y_true) == 0:
             return False
 
         left_evaluated = self.left.is_evaluated() if self.left else True
         right_evaluated = self.right.is_evaluated() if self.right else True
 
-        return left_evaluated and right_evaluated
+        return left_evaluated or right_evaluated
 
     def predict_one(self, X, y):
         """ Predicts the class of the given instance
