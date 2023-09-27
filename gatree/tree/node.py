@@ -2,20 +2,20 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 
 
 class Node:
-    def __init__(self, a2, a1=None):
+    def __init__(self, att_index=None, att_value=None):
         """ Initializes the node with the given parameters
 
-        :param a1: attribute index or -1 if this is a leaf
-        :param a2: attribute value or None if this is a leaf
+        :param att_index: attribute index or -1 if this is a leaf
+        :param att_value: attribute value or None if this is a leaf
         """
-        if a1 is None:
-            self.__init__(-1, a1)  # leaf node
+        if att_index is None:
+            self.__init__(-1, att_index)  # leaf node
         else:
             self.parent = None
             self.left = None
             self.right = None
-            self.att_index = a1  # if -1 then this is leaf
-            self.att_value = a2
+            self.att_index = att_index  # if -1 then this is leaf
+            self.att_value = att_value
 
             self.fitness = None
             self.matrix = None
