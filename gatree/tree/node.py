@@ -147,7 +147,7 @@ class Node:
                 node.right = self.make_node(
                     depth + 1, max_depth, random, att_indexes, att_values, class_count)
             else:  # result (leaf)
-                r = random.randint(0, class_count - 1)
+                r = random.randint(0, class_count)
                 node = Node(att_value=r)
         except Exception as e:
             print(f"{att_index};{att_value};{value_index}")
