@@ -5,14 +5,15 @@ class Node:
         :param att_index: attribute index or -1 if this is a leaf
         :param att_value: attribute value or None if this is a leaf
         """
-        if att_index is None:
-            self.__init__(-1, att_index)  # leaf node
+        if att_index is None and att_value is not None:
+            self.__init__(-1, att_value)  # leaf node
         else:
             self.parent = None
             self.left = None
             self.right = None
-            self.att_index = att_index  # if -1 then this is leaf
-            self.att_value = att_value
+
+            self.att_index = att_index if att_index is not None else None  # if -1 then this is leaf
+            self.att_value = att_value if att_value is not None else None
 
             self.fitness = None
             self.y_true = []
@@ -105,7 +106,7 @@ class Node:
         return max(l_depth, r_depth) + 1
 
     def size(self):
-        """ Size is the number of all nodes (mid-trees nodes + leafs) in the trees.
+        """ Size is the number of all nodes (mid-trees nodes + leaves) in the trees.
 
         :return: number of all nodes in the trees
         """
@@ -116,6 +117,44 @@ class Node:
         if n is None:
             return 0
         return Node.size_helper(n.left) + Node.size_helper(n.right) + 1
+
+    def make_node(self, depth=0, max_depth=None, random=None, att_indexes=None, att_values=None, class_count=None):
+        """ Randomly generates the node and its children.
+
+        :param depth: current depth of the tree
+        :param max_depth: maximum depth of the tree
+        :param random: random number generator
+        :param att_indexes: attribute indexes
+        :param att_values: attribute values
+        :param class_count: number of classes
+        :return: randomly generated node with children"""
+        node = None
+        att_index = None
+        value_index = None
+        att_value = None
+
+        try:
+            # if it's the root, first level or 50/50 chance of building new children.
+            # Must be below maximal depth.
+            if (depth <= 1 or (random.choice([True, False])) and depth < max_depth):
+                subset_index = random.randint(0, len(att_indexes) - 1)
+                att_index = att_indexes[subset_index]
+                value_index = random.randint(0, len(att_values[att_index]) - 1)
+                att_value = att_values[att_index][value_index]
+                node = Node(att_index, att_value)
+                node.left = self.make_node(
+                    depth + 1, max_depth, random, att_indexes, att_values, class_count)
+                node.right = self.make_node(
+                    depth + 1, max_depth, random, att_indexes, att_values, class_count)
+            else:  # result (leaf)
+                r = random.randint(0, class_count - 1)
+                node = Node(att_value=r)
+        except Exception as e:
+            print(f"{att_index};{att_value};{value_index}")
+            print("Error:", e)
+            node = None
+
+        return node
 
     def clear_evaluation(self):
         """ Clears the evaluation of this node and all its children
