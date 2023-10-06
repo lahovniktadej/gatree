@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     df = pd.DataFrame({'Height': [160, 150, 170, 180, 165, 190], 'Weight': [
                       60, 50, 70, 50, 50, 120], 'Age': [15, 13, 17, 23, 18, 22], 'BMI': ['normal', 'low', 'normal', 'low', 'low', 'high']})
-    X = df[['Height', 'Weight']]
+    X = df[['Height', 'Weight', 'Age']]
     y = df['BMI']
     tree = gatree.fit(X, y)
     gatree.plot(tree)

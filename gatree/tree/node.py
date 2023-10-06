@@ -137,9 +137,9 @@ class Node:
             # if it's the root, first level or 50/50 chance of building new children.
             # Must be below maximal depth.
             if (depth <= 1 or (random.choice([True, False])) and depth < max_depth):
-                subset_index = random.randint(0, len(att_indexes) - 1)
+                subset_index = random.randint(0, len(att_indexes))
                 att_index = att_indexes[subset_index]
-                value_index = random.randint(0, len(att_values[att_index]) - 1)
+                value_index = random.randint(0, len(att_values[att_index]))
                 att_value = att_values[att_index][value_index]
                 node = Node(att_index, att_value)
                 node.left = self.make_node(
