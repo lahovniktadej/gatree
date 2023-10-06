@@ -5,7 +5,7 @@ from tree.node import Node
 
 class GATree():
     def __init__(self, max_depth=None, random=None):
-        """Genetic Algorithm Tree Classifier
+        """ Genetic Algorithm Tree Classifier
 
         :param max_depth: maximum depth of the tree
         :param random: random number generator
@@ -14,7 +14,7 @@ class GATree():
         self.random = random if random is not None else np.random
 
     def fit(self, X, y):
-        """Fit a tree to a training set
+        """ Fit a tree to a training set
 
         :param X: training data
         :param y: target values
@@ -35,12 +35,31 @@ class GATree():
     def predict(self, X):
         pass
 
+    def plot(self, node=None, prefix=''):
+        """ Plot the decision tree with nodes and leaves
+
+        :param node: current node to plot
+        :param prefix: prefix for the current node
+        """
+        if node is not None:
+            if node.att_index != -1:
+                print(prefix + '├── {} > {}'.format(self.X.columns.tolist()
+                      [node.att_index], node.att_value))
+            else:
+                print(
+                    prefix + '└── Class: {}'.format(self.att_values[-1][node.att_value]))
+
+            if node.left is not None or node.right is not None:
+                self.plot(node.left, prefix + '    ')
+                self.plot(node.right, prefix + '    ')
+
 
 if __name__ == '__main__':
-    gatree = GATree(max_depth=8)
+    gatree = GATree(max_depth=5)
 
-    df = pd.DataFrame({'Višina': [160, 180, 170, 180, 160, 190], 'Teža': [
-                      60, 50, 70, 50, 50, 120], 'BMI': ['normalen', 'nizek', 'normalen', 'nizek', 'nizek', 'visok']})
-    X = df[['Višina', 'Teža']]
+    df = pd.DataFrame({'Height': [160, 150, 170, 180, 165, 190], 'Weight': [
+                      60, 50, 70, 50, 50, 120], 'Age': [15, 13, 17, 23, 18, 22], 'BMI': ['normal', 'low', 'normal', 'low', 'low', 'high']})
+    X = df[['Height', 'Weight']]
     y = df['BMI']
     tree = gatree.fit(X, y)
+    gatree.plot(tree)
