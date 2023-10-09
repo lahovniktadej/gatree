@@ -20,16 +20,18 @@ class Node:
             self.y_pred = []
 
     @staticmethod
-    def copy(node):
+    def copy(node, parent=None):
         """ Returns a deep copy of the given node
 
         :param node: node to be copied
         :return: deep copy of the given node
         """
         copy = Node(node.att_index, node.att_value)
-        copy.parent = node.parent
-        copy.left = node.left
-        copy.right = node.right
+        copy.parent = parent
+        copy.left = Node.copy(
+            node.left, parent=node) if node.left is not None else None
+        copy.right = Node.copy(
+            node.right, parent=node) if node.right is not None else None
         copy.fitness = node.fitness
         copy.y_true = node.y_true
         copy.y_pred = node.y_pred
