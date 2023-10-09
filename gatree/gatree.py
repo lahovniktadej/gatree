@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from tree.node import Node
+from ga.crossover import Crossover
 
 
 class GATree():
@@ -28,9 +29,14 @@ class GATree():
         self.class_count = len(self.att_values[-1])
 
         node = Node()
-        tree = node.make_node(max_depth=self.max_depth, random=self.random,
-                              att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count)
-        return tree
+        tree1 = node.make_node(max_depth=self.max_depth, random=self.random,
+                               att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count)
+        tree2 = node.make_node(max_depth=self.max_depth, random=self.random,
+                               att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count)
+        tree3 = Crossover.crossover(
+            tree1=tree1, tree2=tree2, random=self.random)
+
+        return tree3
 
     def predict(self, X):
         pass
