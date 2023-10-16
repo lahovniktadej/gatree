@@ -134,6 +134,8 @@ class Node:
         att_index = None
         value_index = None
         att_value = None
+        if max_depth == None:
+            max_depth = depth
 
         try:
             # if it's the root, first level or 50/50 chance of building new children.
@@ -143,14 +145,14 @@ class Node:
                 att_index = att_indexes[subset_index]
                 value_index = random.randint(0, len(att_values[att_index]))
                 att_value = att_values[att_index][value_index]
-                node = Node(att_index, att_value)
-                node.left = self.make_node(
-                    depth + 1, max_depth, random, att_indexes, att_values, class_count)
-                node.right = self.make_node(
-                    depth + 1, max_depth, random, att_indexes, att_values, class_count)
+                node = Node(att_index=att_index, att_value=att_value)
+                node.left = self.make_node(depth=depth + 1, max_depth=max_depth, random=random,
+                                           att_indexes=att_indexes, att_values=att_values, class_count=class_count)
+                node.right = self.make_node(depth=depth + 1, max_depth=max_depth, random=random,
+                                            att_indexes=att_indexes, att_values=att_values, class_count=class_count)
             else:  # result (leaf)
                 r = random.randint(0, class_count)
-                node = Node(att_value=r)
+                node = Node(att_index=-1, att_value=r)
         except Exception as e:
             print(f"{att_index};{att_value};{value_index}")
             print("Error:", e)
