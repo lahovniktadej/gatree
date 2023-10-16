@@ -12,6 +12,10 @@ class Mutation:
                 Mutation.mutate_leaf(
                     node, att_indexes, att_values, class_count, random)
                 break
+            elif random.randint(0, depth) == 0:  # for mid-tree nodes
+                Mutation.mutate_operator(
+                    node, att_indexes, att_values, class_count, random)
+                break
 
             # go to next random child
             if random.choice([True, False]):
@@ -74,8 +78,6 @@ class Mutation:
         if parent.left == node:
             left = True
 
-        print(node.depth())
-
         n = Node()
         subtree = n.make_node(max_depth=node.depth(), random=random,
                               att_indexes=att_indexes, att_values=att_values, class_count=class_count)
@@ -85,3 +87,40 @@ class Mutation:
             parent.set_left(subtree)
         else:
             parent.set_right(subtree)
+
+    @staticmethod
+    def mutate_operator(node, att_indexes, att_values, class_count, random):
+        """ Mutate mid-tree node
+
+        :param node: mid-tree node
+        :param att_indexes: attribute indexes
+        :param att_values: attribute values
+        :param class_count: number of classes
+        :param random: random number generator
+        """
+        rand = random.random()
+        if rand < 0.25 or node.parent == None:
+            Mutation.change_attribute(
+                node, att_indexes, att_values, random)
+
+    @staticmethod
+    def change_attribute(node, att_indexes, att_values, random):
+        """ Change attribute of the mid-tree node
+
+        :param node: mid-tree node
+        :param att_indexes: attribute indexes
+        :param att_values: attribute values
+        :param random: random number generator
+        """
+        att_index_old = node.att_index
+        att_index_new = att_index_old
+
+        att_value_old = node.att_value
+        att_value_new = att_value_old
+
+        while att_index_old == att_index_new:
+            att_index_new = random.randint(0, len(att_indexes))
+            att_value_new = random.randint(0, len(att_values[att_index_new]))
+
+        node.att_index = att_index_new
+        node.att_value = att_values[att_index_new][att_value_new]
