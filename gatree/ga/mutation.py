@@ -29,11 +29,28 @@ class Mutation:
 
     @staticmethod
     def mutate_leaf(node, att_indexes, att_values, class_count, random):
-        if random.choice([True, False]):
+        """ Mutate leaf node
+
+        :param node: leaf node
+        :param att_indexes: attribute indexes
+        :param att_values: attribute values
+        :param class_count: number of classes
+        :param random: random number generator
+        """
+        if random.choice([True, False]):  # change class
             Mutation.change_class(node, class_count, random)
+        else:  # exchange for new subtree
+            Mutation.exchange_class_for_tree(
+                node, att_indexes, att_values, class_count, random)
 
     @staticmethod
     def change_class(node, class_count, random):
+        """ Change class of the leaf node
+
+        :param node: leaf node
+        :param class_count: number of classes
+        :param random: random number generator
+        """
         result_old = node.att_value
         result_new = result_old
 
@@ -41,3 +58,30 @@ class Mutation:
             result_new = random.randint(0, class_count)
 
         node.att_value = result_new
+
+    @staticmethod
+    def exchange_class_for_tree(node, att_indexes, att_values, class_count, random):
+        """ Exchange leaf node for new subtree
+
+        :param node: leaf node
+        :param att_indexes: attribute indexes
+        :param att_values: attribute values
+        :param class_count: number of classes
+        :param random: random number generator
+        """
+        parent = node.parent
+        left = False
+        if parent.left == node:
+            left = True
+
+        print(node.depth())
+
+        n = Node()
+        subtree = n.make_node(max_depth=node.depth(), random=random,
+                              att_indexes=att_indexes, att_values=att_values, class_count=class_count)
+        subtree.parent = parent
+
+        if left:
+            parent.set_left(subtree)
+        else:
+            parent.set_right(subtree)
