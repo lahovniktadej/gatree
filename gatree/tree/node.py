@@ -226,46 +226,6 @@ class Node:
         :return: string representation of this node"""
         return self.__str__()
 
-    def __eq__(self, other):
-        """ Returns true if this node is equal to the given node
-
-        :param other: node to be compared
-        :return: true if this node is equal to the given node
-        """
-        if not isinstance(other, Node):
-            return False
-
-        if self.att_index != other.att_index or self.att_value != other.att_value:
-            return False
-
-        if (self.left is not None or other.left is not None) and (self.left != other.left):
-            return False
-
-        if (self.right is not None or other.right is not None) and (self.right != other.right):
-            return False
-
-        if (self.parent is not None or other.parent is not None) and (self.parent != other.parent):
-            return False
-
-        if self.fitness != other.fitness:
-            return False
-
-        if self.y_true != other.y_true:
-            return False
-
-        if self.y_pred != other.y_pred:
-            return False
-
-        return True
-
-    def __ne__(self, other):
-        """ Returns true if this node is not equal to the given node
-
-        :param other: node to be compared
-        :return: true if this node is not equal to the given node
-        """
-        return not self.__eq__(other)
-
 
 if __name__ == "__main__":
     from sklearn.metrics import accuracy_score
