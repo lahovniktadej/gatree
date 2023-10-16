@@ -29,9 +29,9 @@ class Node:
         copy = Node(node.att_index, node.att_value)
         copy.parent = parent
         copy.left = Node.copy(
-            node.left, parent=node) if node.left is not None else None
+            node.left, parent=copy) if node.left is not None else None
         copy.right = Node.copy(
-            node.right, parent=node) if node.right is not None else None
+            node.right, parent=copy) if node.right is not None else None
         copy.fitness = node.fitness
         copy.y_true = node.y_true
         copy.y_pred = node.y_pred
