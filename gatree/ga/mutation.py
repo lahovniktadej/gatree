@@ -103,6 +103,8 @@ class Mutation:
             Mutation.change_attribute(node, att_indexes, att_values, random)
         elif rand < 0.5:  # exchange attribute value for other value
             Mutation.change_attribute_value(node, att_values, random)
+        elif rand < 0.75:  # exchange attribute for class
+            Mutation.exchange_tree_for_class(node, class_count, random)
 
     @staticmethod
     def change_attribute(node, att_indexes, att_values, random):
@@ -143,3 +145,26 @@ class Mutation:
             att_value_new = random.randint(0, len(att_values[att_index]))
 
         node.att_value = att_values[att_index][att_value_new]
+
+    @staticmethod
+    def exchange_tree_for_class(node, class_count, random):
+        """ Exchange mid-tree node for class
+
+        :param node: mid-tree node
+        :param att_indexes: attribute indexes
+        :param att_values: attribute values
+        :param class_count: number of classes
+        :param random: random number generator
+        """
+        parent = node.parent
+        left = False
+        if parent.left == node:
+            left = True
+
+        leaf = Node(att_index=-1, att_value=random.randint(0, class_count))
+        leaf.parent = parent
+
+        if left:
+            parent.set_left(leaf)
+        else:
+            parent.set_right(leaf)
