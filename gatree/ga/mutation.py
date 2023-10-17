@@ -99,9 +99,10 @@ class Mutation:
         :param random: random number generator
         """
         rand = random.random()
-        if rand < 0.25 or node.parent == None:
-            Mutation.change_attribute(
-                node, att_indexes, att_values, random)
+        if rand < 0.25 or node.parent == None:  # exchange attribute for other attribute
+            Mutation.change_attribute(node, att_indexes, att_values, random)
+        elif rand < 0.5:  # exchange attribute value for other value
+            Mutation.change_attribute_value(node, att_values, random)
 
     @staticmethod
     def change_attribute(node, att_indexes, att_values, random):
@@ -124,3 +125,21 @@ class Mutation:
 
         node.att_index = att_index_new
         node.att_value = att_values[att_index_new][att_value_new]
+
+    @staticmethod
+    def change_attribute_value(node, att_values, random):
+        """ Change attribute value of the mid-tree node
+
+        :param node: mid-tree node
+        :param att_values: attribute values
+        :param random: random number generator
+        """
+        att_index = node.att_index
+
+        att_value_old = node.att_value
+        att_value_new = att_value_old
+
+        while att_value_old == att_value_new:
+            att_value_new = random.randint(0, len(att_values[att_index]))
+
+        node.att_value = att_values[att_index][att_value_new]
