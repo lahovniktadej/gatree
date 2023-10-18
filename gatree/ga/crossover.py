@@ -1,7 +1,4 @@
-try:
-    from tree.node import Node
-except ImportError as ie:
-    print(ie)
+from gatree.tree.node import Node
 
 
 class Crossover:

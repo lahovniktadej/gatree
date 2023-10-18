@@ -1,11 +1,8 @@
 import pandas as pd
 import numpy as np
-try:
-    from tree.node import Node
-    from ga.crossover import Crossover
-    from ga.mutation import Mutation
-except ImportError as ie:
-    print(ie)
+from gatree.tree.node import Node
+from gatree.ga.crossover import Crossover
+from gatree.ga.mutation import Mutation
 
 
 class GATree():
