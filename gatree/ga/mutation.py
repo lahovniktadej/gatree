@@ -1,9 +1,28 @@
-from tree.node import Node
+try:
+    from tree.node import Node
+except ImportError as ie:
+    print(ie)
 
 
 class Mutation:
+    """
+    Mutation operations for tree nodes.
+    """
     @staticmethod
     def mutation(root, att_indexes, att_values, class_count, random):
+        """
+        Apply mutation on a tree node.
+
+        Args:
+            root (Node): The root node of the tree.
+            att_indexes (list): List of attribute indexes.
+            att_values (list): List of attribute values.
+            class_count (int): Number of classes.
+            random (Random): Random number generator.
+
+        Returns:
+            Node: The mutated node.
+        """
         node = Node.copy(root)
         depth = node.max_depth()
 
@@ -33,13 +52,15 @@ class Mutation:
 
     @staticmethod
     def mutate_leaf(node, att_indexes, att_values, class_count, random):
-        """ Mutate leaf node
+        """
+        Mutate a leaf node.
 
-        :param node: leaf node
-        :param att_indexes: attribute indexes
-        :param att_values: attribute values
-        :param class_count: number of classes
-        :param random: random number generator
+        Args:
+            node (Node): The leaf node.
+            att_indexes (list): List of attribute indexes.
+            att_values (list): List of attribute values.
+            class_count (int): Number of classes.
+            random (Random): Random number generator.
         """
         if random.choice([True, False]):  # change class
             Mutation.change_class(node, class_count, random)
@@ -49,11 +70,13 @@ class Mutation:
 
     @staticmethod
     def change_class(node, class_count, random):
-        """ Change class of the leaf node
+        """
+        Change class of a leaf node.
 
-        :param node: leaf node
-        :param class_count: number of classes
-        :param random: random number generator
+        Args:
+            node (Node): The leaf node.
+            class_count (int): Number of classes.
+            random (Random): Random number generator.
         """
         result_old = node.att_value
         result_new = result_old
@@ -65,13 +88,15 @@ class Mutation:
 
     @staticmethod
     def exchange_class_for_tree(node, att_indexes, att_values, class_count, random):
-        """ Exchange leaf node for new subtree
+        """
+        Exchange a leaf node for a new subtree.
 
-        :param node: leaf node
-        :param att_indexes: attribute indexes
-        :param att_values: attribute values
-        :param class_count: number of classes
-        :param random: random number generator
+        Args:
+            node (Node): The leaf node.
+            att_indexes (list): List of attribute indexes.
+            att_values (list): List of attribute values.
+            class_count (int): Number of classes.
+            random (Random): Random number generator.
         """
         parent = node.parent
         left = False
@@ -90,13 +115,15 @@ class Mutation:
 
     @staticmethod
     def mutate_operator(node, att_indexes, att_values, class_count, random):
-        """ Mutate mid-tree node
+        """
+        Mutate a mid-tree node.
 
-        :param node: mid-tree node
-        :param att_indexes: attribute indexes
-        :param att_values: attribute values
-        :param class_count: number of classes
-        :param random: random number generator
+        Args:
+            node (Node): The mid-tree node.
+            att_indexes (list): List of attribute indexes.
+            att_values (list): List of attribute values.
+            class_count (int): Number of classes.
+            random (Random): Random number generator.
         """
         rand = random.random()
         if rand < 0.25 or node.parent == None:  # exchange attribute for other attribute
@@ -111,12 +138,14 @@ class Mutation:
 
     @staticmethod
     def change_attribute(node, att_indexes, att_values, random):
-        """ Change attribute of the mid-tree node
+        """
+        Change attribute of a mid-tree node.
 
-        :param node: mid-tree node
-        :param att_indexes: attribute indexes
-        :param att_values: attribute values
-        :param random: random number generator
+        Args:
+            node (Node): The mid-tree node.
+            att_indexes (list): List of attribute indexes.
+            att_values (list): List of attribute values.
+            random (Random): Random number generator.
         """
         att_index_old = node.att_index
         att_index_new = att_index_old
@@ -133,11 +162,13 @@ class Mutation:
 
     @staticmethod
     def change_attribute_value(node, att_values, random):
-        """ Change attribute value of the mid-tree node
+        """
+        Change attribute value of a mid-tree node.
 
-        :param node: mid-tree node
-        :param att_values: attribute values
-        :param random: random number generator
+        Args:
+            node (Node): The mid-tree node.
+            att_values (list): List of attribute values.
+            random (Random): Random number generator.
         """
         att_index = node.att_index
 
@@ -151,11 +182,13 @@ class Mutation:
 
     @staticmethod
     def exchange_tree_for_class(node, class_count, random):
-        """ Exchange mid-tree node for class
+        """
+        Exchange a mid-tree node for a class.
 
-        :param node: mid-tree node
-        :param class_count: number of classes
-        :param random: random number generator
+        Args:
+            node (Node): The mid-tree node.
+            class_count (int): Number of classes.
+            random (Random): Random number generator.
         """
         parent = node.parent
         left = False
@@ -172,13 +205,15 @@ class Mutation:
 
     @staticmethod
     def exchange_tree_for_tree(node, att_indexes, att_values, class_count, random):
-        """ Exchange mid-tree node for new subtree
+        """
+        Exchange a mid-tree node for a new subtree.
 
-        :param node: mid-tree node
-        :param att_indexes: attribute indexes
-        :param att_values: attribute values
-        :param class_count: number of classes
-        :param random: random number generator
+        Args:
+            node (Node): The mid-tree node.
+            att_indexes (list): List of attribute indexes.
+            att_values (list): List of attribute values.
+            class_count (int): Number of classes.
+            random (Random): Random number generator.
         """
         parent = node.parent
         left = False

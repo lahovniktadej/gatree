@@ -1,25 +1,52 @@
 import pandas as pd
 import numpy as np
-from tree.node import Node
-from ga.crossover import Crossover
-from ga.mutation import Mutation
+try:
+    from tree.node import Node
+    from ga.crossover import Crossover
+    from ga.mutation import Mutation
+except ImportError as ie:
+    print(ie)
 
 
 class GATree():
-    def __init__(self, max_depth=None, random=None):
-        """ Genetic Algorithm Tree Classifier
+    """
+    Genetic Algorithm Tree Classifier.
 
-        :param max_depth: maximum depth of the tree
-        :param random: random number generator
+    Args:
+        max_depth (int, optional): Maximum depth of the tree.
+        random (Random, optional): Random number generator.
+
+    Attributes:
+        max_depth (int, optional): Maximum depth of the tree.
+        random (Random): Random number generator.
+        X (pandas.DataFrame): Training data.
+        y (pandas.Series): Target values.
+        att_indexes (numpy.ndarray): Array of attribute indexes.
+        att_values (dict): Dictionary of attribute values.
+        class_count (int): Number of classes.
+    """
+
+    def __init__(self, max_depth=None, random=None):
+        """
+        Initialize the Genetic Algorithm Tree Classifier.
+
+        Args:
+            max_depth (int, optional): Maximum depth of the tree.
+            random (Random, optional): Random number generator.
         """
         self.max_depth = max_depth
         self.random = random if random is not None else np.random
 
     def fit(self, X, y):
-        """ Fit a tree to a training set
+        """
+        Fit a tree to a training set.
 
-        :param X: training data
-        :param y: target values
+        Args:
+            X (pandas.DataFrame): Training data.
+            y (pandas.Series): Target values.
+
+        Returns:
+            Node: The fitted tree.
         """
         self.X = X
         self.y = y
@@ -47,10 +74,12 @@ class GATree():
         pass
 
     def plot(self, node=None, prefix=''):
-        """ Plot the decision tree with nodes and leaves
+        """
+        Plot the decision tree with nodes and leaves.
 
-        :param node: current node to plot
-        :param prefix: prefix for the current node
+        Args:
+            node (Node, optional): Current node to plot.
+            prefix (str, optional): Prefix for the current node.
         """
         if node is not None:
             if node.att_index != -1:

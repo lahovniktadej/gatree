@@ -1,9 +1,29 @@
 class Node:
-    def __init__(self, att_index=None, att_value=None):
-        """ Initializes the node with the given parameters
+    """
+    Node class for decision trees.
 
-        :param att_index: attribute index or -1 if this is a leaf
-        :param att_value: attribute value or None if this is a leaf
+    Args:
+        att_index (int, optional): Attribute index or -1 if this is a leaf.
+        att_value (any, optional): Attribute value or None if this is a leaf.
+
+    Attributes:
+        parent (Node): Parent node.
+        left (Node): Left child node.
+        right (Node): Right child node.
+        att_index (int, optional): Attribute index or -1 if this is a leaf.
+        att_value (any, optional): Attribute value or None if this is a leaf.
+        fitness (None): Placeholder for fitness value (not used in the provided code).
+        y_true (list): List of true class values for evaluation (not used in the provided code).
+        y_pred (list): List of predicted class values for evaluation (not used in the provided code).
+    """
+
+    def __init__(self, att_index=None, att_value=None):
+        """
+        Initializes the node with the given parameters.
+
+        Args:
+            att_index (int, optional): Attribute index or -1 if this is a leaf.
+            att_value (any, optional): Attribute value or None if this is a leaf.
         """
         if att_index is None and att_value is not None:
             self.__init__(-1, att_value)  # leaf node
@@ -21,10 +41,15 @@ class Node:
 
     @staticmethod
     def copy(node, parent=None):
-        """ Returns a deep copy of the given node
+        """
+        Returns a deep copy of the given node.
 
-        :param node: node to be copied
-        :return: deep copy of the given node
+        Args:
+            node (Node): Node to be copied.
+            parent (Node, optional): Parent node of the copied node.
+
+        Returns:
+            Node: Deep copy of the given node.
         """
         copy = Node(node.att_index, node.att_value)
         copy.parent = parent
@@ -38,68 +63,86 @@ class Node:
         return copy
 
     def set_left(self, n):
-        """ Sets the left child of this node to the given node
+        """
+        Sets the left child of this node to the given node.
 
-        :param n: node to be set as the left child
+        Args:
+            n (Node): Node to be set as the left child.
         """
         self.left = n
         n.parent = self
 
     def set_right(self, n):
-        """ Sets the right child of this node to the given node
+        """
+        Sets the right child of this node to the given node.
 
-        :param n: node to be set as the right child
+        Args:
+            n (Node): Node to be set as the right child.
         """
         self.right = n
         n.parent = self
 
     def get_root(self):
-        """ Returns the root node of the tree
+        """
+        Returns the root node of the tree.
 
-        :return: root node of the tree
+        Returns:
+            Node: Root node of the tree.
         """
         if self.parent is None:
             return self
         return self.parent.get_root()
 
     def get_children(self):
-        """ Returns the children of this node
+        """
+        Returns the children of this node.
 
-        :return: list of children of this node
+        Returns:
+            tuple: Tuple containing the left and right children nodes.
         """
         return self.left, self.right
 
     def get_leaves(self):
-        """ Returns the leaves of this node
+        """
+        Returns the leaves of this node.
 
-        :return: list of leaves of this node
+        Returns:
+            list: List of leaves of this node.
         """
         if self.left is None:
             return [self]
         return self.left.get_leaves() + self.right.get_leaves()
 
     def depth(self):
-        """ Returns the depth of this node
+        """
+        Returns the depth of this node.
 
-        :return: depth of this node
+        Returns:
+            int: Depth of this node.
         """
         if self.parent is None:
             return 1
         return self.parent.depth() + 1
 
     def max_depth(self):
-        """ Returns the maximum depth of the tree
+        """
+        Returns the maximum depth of the tree.
 
-        :return: maximum depth of the tree
+        Returns:
+            int: Maximum depth of the tree.
         """
         return self.max_depth_helper(self.get_root())
 
     @staticmethod
     def max_depth_helper(n):
-        """ Helper function for max_depth
+        """
+        Helper function for max_depth.
 
-        :param n: node to be used as the root
-        :return: maximum depth of the tree
+        Args:
+            n (Node): Node to be used as the root.
+
+        Returns:
+            int: Maximum depth of the tree.
         """
         if n is None:
             return 0
@@ -108,28 +151,44 @@ class Node:
         return max(l_depth, r_depth) + 1
 
     def size(self):
-        """ Size is the number of all nodes (mid-trees nodes + leaves) in the trees.
+        """
+        Size is the number of all nodes (mid-tree nodes + leaves) in the trees.
 
-        :return: number of all nodes in the trees
+        Returns:
+            int: Number of all nodes in the trees.
         """
         return self.size_helper(self.get_root())
 
     @staticmethod
     def size_helper(n):
+        """
+        Helper function for size.
+
+        Args:
+            n (Node): Node to be used as the root.
+
+        Returns:
+            int: Number of all nodes in the trees.
+        """
         if n is None:
             return 0
         return Node.size_helper(n.left) + Node.size_helper(n.right) + 1
 
     def make_node(self, depth=0, max_depth=None, random=None, att_indexes=None, att_values=None, class_count=None):
-        """ Randomly generates the node and its children.
+        """
+        Randomly generates the node and its children.
 
-        :param depth: current depth of the tree
-        :param max_depth: maximum depth of the tree
-        :param random: random number generator
-        :param att_indexes: attribute indexes
-        :param att_values: attribute values
-        :param class_count: number of classes
-        :return: randomly generated node with children"""
+        Args:
+            depth (int, optional): Current depth of the tree.
+            max_depth (int, optional): Maximum depth of the tree.
+            random (Random, optional): Random number generator.
+            att_indexes (numpy.ndarray, optional): Attribute indexes.
+            att_values (dict, optional): Attribute values.
+            class_count (int, optional): Number of classes.
+
+        Returns:
+            Node: Randomly generated node with children.
+        """
         node = None
         att_index = None
         value_index = None
@@ -161,7 +220,8 @@ class Node:
         return node
 
     def clear_evaluation(self):
-        """ Clears the evaluation of this node and all its children
+        """
+        Clears the evaluation of this node and all its children.
         """
         self.y_true = []
         self.y_pred = []
@@ -171,9 +231,11 @@ class Node:
             self.right.clear_evaluation()
 
     def is_evaluated(self):
-        """ Returns true if this node and all its children are evaluated
+        """
+        Returns true if this node and all its children are evaluated.
 
-        :return: true if this node and all its children are evaluated
+        Returns:
+            bool: True if this node and all its children are evaluated.
         """
         if len(self.y_pred) == 0 and len(self.y_true) == 0:
             return False
@@ -184,11 +246,15 @@ class Node:
         return left_evaluated or right_evaluated
 
     def predict_one(self, X, y):
-        """ Predicts the class of the given instance
+        """
+        Predicts the class of the given instance.
 
-        :param X: instance to be predicted
-        :param y: actual class of the given instance
-        :return: predicted class
+        Args:
+            X (list): Instance to be predicted.
+            y (int): Actual class of the given instance.
+
+        Returns:
+            int: Predicted class.
         """
         try:
             actual = int(y)
@@ -211,9 +277,11 @@ class Node:
             return -1
 
     def __str__(self):
-        """ Returns a string representation of this node
+        """
+        Returns a string representation of this node.
 
-        :return: string representation of this node
+        Returns:
+            str: String representation of this node.
         """
         if self.att_index == -1:
             # Assuming att_value is a numeric index
@@ -223,9 +291,12 @@ class Node:
             return f"Attribute {self.att_index} > {self.att_value}"
 
     def __repr__(self):
-        """ Returns a string representation of this node
+        """
+        Returns a string representation of this node.
 
-        :return: string representation of this node"""
+        Returns:
+            str: String representation of this node.
+        """
         return self.__str__()
 
 

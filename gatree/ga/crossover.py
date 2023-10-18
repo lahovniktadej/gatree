@@ -1,15 +1,24 @@
-from tree.node import Node
+try:
+    from tree.node import Node
+except ImportError as ie:
+    print(ie)
 
 
 class Crossover:
-    """ Crossover class for genetic algorithm """
+    """
+    Crossover operations for genetic algorithm.
+    """
     def crossover(tree1, tree2, random):
-        """ Crossover two trees
+        """
+        Perform crossover between two trees.
 
-        :param tree1: first tree
-        :param tree2: second tree
-        :param random: random number generator
-        :return: new tree
+        Args:
+            tree1 (Node): The first tree for crossover.
+            tree2 (Node): The second tree for crossover.
+            random (Random): Random number generator.
+
+        Returns:
+            Node: The new tree resulting from crossover.
         """
         n1 = Node.copy(tree1)
         n2 = Node.copy(tree2)
@@ -17,7 +26,7 @@ class Crossover:
         size2 = n2.max_depth()
 
         while True:
-            if (n1.left == None or random.randint(0, size1 - 1) == 0) and n1.parent != None:
+            if (n1.left == None or random.randint(0, size1) == 0) and n1.parent != None:
                 break
 
             if random.choice([True, False]):
@@ -26,7 +35,7 @@ class Crossover:
                 n1 = n1.right
 
         while True:
-            if (n2.left == None or random.randint(0, size2 - 1) == 0) and n2.parent != None:
+            if (n2.left == None or random.randint(0, size2) == 0) and n2.parent != None:
                 break
 
             if random.choice([True, False]):
