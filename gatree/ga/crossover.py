@@ -1,4 +1,4 @@
-from gatree.tree.node import Node
+from tree.node import Node
 
 
 class Crossover:

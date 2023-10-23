@@ -245,7 +245,7 @@ class Node:
 
         return left_evaluated or right_evaluated
 
-    def predict_one(self, X, y):
+    def predict_one(self, X, y=None):
         """
         Predicts the class of the given instance.
 
@@ -257,19 +257,19 @@ class Node:
             int: Predicted class.
         """
         try:
-            actual = int(y)
-            predicted = int(self.att_value)
-
             if self.att_index != -1:
-                if X[self.att_index] > self.att_value:
+                if X.iloc[self.att_index] > self.att_value:
                     if self.left is not None:
                         predicted = self.left.predict_one(X, y)
                 else:
                     if self.right is not None:
                         predicted = self.right.predict_one(X, y)
+            else:
+                predicted = int(self.att_value)
 
-            self.y_true.append(actual)
-            self.y_pred.append(predicted)
+            if y is not None:
+                self.y_true.append(int(y))
+                self.y_pred.append(predicted)
 
             return predicted
         except Exception as e:

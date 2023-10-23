@@ -1,8 +1,9 @@
 import pandas as pd
 import numpy as np
-from gatree.tree.node import Node
-from gatree.ga.crossover import Crossover
-from gatree.ga.mutation import Mutation
+from tree.node import Node
+from ga.crossover import Crossover
+from ga.mutation import Mutation
+from sklearn.metrics import accuracy_score
 
 
 class GATree():
@@ -34,6 +35,16 @@ class GATree():
         self.max_depth = max_depth
         self.random = random if random is not None else np.random
 
+    def fitness_function(self, root):
+        """ 
+        Fitness function for the genetic algorithm.
+
+        Returns:
+            float: The fitness value.
+        """
+        acc = accuracy_score(root.y_true, root.y_pred)
+        return (1 - acc + 0.002 * root.size())
+
     def fit(self, X, y):
         """
         Fit a tree to a training set.
@@ -53,17 +64,25 @@ class GATree():
         self.att_values[-1] = sorted(y.unique())
         self.class_count = len(self.att_values[-1])
 
+        # Random tree generation
         node = Node()
         tree1 = node.make_node(max_depth=self.max_depth, random=self.random,
                                att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count)
         tree2 = node.make_node(max_depth=self.max_depth, random=self.random,
                                att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count)
 
+        # Crossover between two randomly generated trees
         tree = Crossover.crossover(
             tree1=tree1, tree2=tree2, random=self.random)
 
+        # Mutation of the tree
         tree = Mutation.mutation(root=tree, att_indexes=self.att_indexes,
                                  att_values=self.att_values, class_count=self.class_count, random=self.random)
+
+        # Evaluation of the tree
+        for i in range(X.shape[0]):
+            tree.predict_one(X.iloc[i], y.iloc[i])
+        tree.fitness = self.fitness_function(tree)
 
         return tree
 
@@ -94,9 +113,11 @@ class GATree():
 if __name__ == '__main__':
     gatree = GATree(max_depth=5)
 
-    df = pd.DataFrame({'Height': [160, 150, 170, 180, 165, 190], 'Weight': [
-                      60, 50, 70, 50, 50, 120], 'Age': [15, 13, 17, 23, 18, 22], 'BMI': ['normal', 'low', 'normal', 'low', 'low', 'high']})
-    X = df[['Height', 'Weight', 'Age']]
-    y = df['BMI']
+    from sklearn import datasets
+    iris = datasets.load_iris()
+
+    X = pd.DataFrame(iris.data, columns=iris.feature_names)
+    y = pd.Series(iris.target)
+
     tree = gatree.fit(X, y)
     gatree.plot(tree)
