@@ -4,17 +4,17 @@ class Node:
 
     Args:
         att_index (int, optional): Attribute index or -1 if this is a leaf.
-        att_value (any, optional): Attribute value or None if this is a leaf.
+        att_value (any, optional): Attribute value or class index if this is a leaf.
 
     Attributes:
         parent (Node): Parent node.
         left (Node): Left child node.
         right (Node): Right child node.
         att_index (int, optional): Attribute index or -1 if this is a leaf.
-        att_value (any, optional): Attribute value or None if this is a leaf.
-        fitness (None): Placeholder for fitness value (not used in the provided code).
-        y_true (list): List of true class values for evaluation (not used in the provided code).
-        y_pred (list): List of predicted class values for evaluation (not used in the provided code).
+        att_value (any, optional): Attribute value or class index if this is a leaf.
+        fitness (None): Placeholder for fitness value.
+        y_true (list): List of true class values for evaluation.
+        y_pred (list): List of predicted class values for evaluation.
     """
 
     def __init__(self, att_index=None, att_value=None):
@@ -23,7 +23,7 @@ class Node:
 
         Args:
             att_index (int, optional): Attribute index or -1 if this is a leaf.
-            att_value (any, optional): Attribute value or None if this is a leaf.
+            att_value (any, optional): Attribute value or class index if this is a leaf.
         """
         if att_index is None and att_value is not None:
             self.__init__(-1, att_value)  # leaf node
