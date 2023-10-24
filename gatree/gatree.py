@@ -13,6 +13,7 @@ class GATree():
     Args:
         max_depth (int, optional): Maximum depth of the tree.
         random (Random, optional): Random number generator.
+        fitness_function (function, optional): Fitness function for the genetic algorithm.
 
     Attributes:
         max_depth (int, optional): Maximum depth of the tree.
@@ -22,22 +23,28 @@ class GATree():
         att_indexes (numpy.ndarray): Array of attribute indexes.
         att_values (dict): Dictionary of attribute values.
         class_count (int): Number of classes.
+        fitness_function (function): Fitness function for the genetic algorithm.
     """
 
-    def __init__(self, max_depth=None, random=None):
+    def __init__(self, max_depth=None, random=None, fitness_function=None):
         """
         Initialize the Genetic Algorithm Tree Classifier.
 
         Args:
             max_depth (int, optional): Maximum depth of the tree.
             random (Random, optional): Random number generator.
+            fitness_function (function, optional): Fitness function for the genetic algorithm.
         """
         self.max_depth = max_depth
         self.random = random if random is not None else np.random
+        self.fitness_function = fitness_function if fitness_function is not None else self.default_fitness_function
 
-    def fitness_function(self, root):
+    def default_fitness_function(self, root):
         """ 
-        Fitness function for the genetic algorithm.
+        Default fitness function for the genetic algorithm.
+
+        Args:
+            root (Node): Root node of the tree.
 
         Returns:
             float: The fitness value.
@@ -111,7 +118,17 @@ class GATree():
 
 
 if __name__ == '__main__':
-    gatree = GATree(max_depth=5)
+    def fitness_function(root):
+        """ 
+        Fitness function for the genetic algorithm.
+
+        Returns:
+            float: The fitness value.
+        """
+        acc = accuracy_score(root.y_true, root.y_pred)
+        return (acc + root.size())
+
+    gatree = GATree(max_depth=5, fitness_function=fitness_function)
 
     from sklearn import datasets
     iris = datasets.load_iris()
