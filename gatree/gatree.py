@@ -93,9 +93,12 @@ class GATree():
             if i != max_iter:
                 # Descendant generation
                 descendant = []
-                for j in range(0, population_size, 2):
+                for j in range(0, len(population), 2):
                     # Tree selection
                     tree1 = population[j]
+                    if j+1 >= len(population):
+                        # Skip last tree if population size is odd
+                        continue
                     tree2 = population[j + 1]
 
                     # Crossover between selected trees
@@ -160,5 +163,5 @@ if __name__ == '__main__':
     X = pd.DataFrame(iris.data, columns=iris.feature_names)
     y = pd.Series(iris.target)
 
-    tree = gatree.fit(X=X, y=y, population_size=10, max_iter=10)
+    tree = gatree.fit(X=X, y=y, population_size=9, max_iter=10)
     gatree.plot(tree)
