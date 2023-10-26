@@ -85,6 +85,9 @@ class GATree():
                 tree.predict_one(X.iloc[i], y.iloc[i])
             tree.fitness = self.fitness_function(tree)
 
+        # Sort population by fitness
+        population.sort(key=lambda x: x.fitness, reverse=True)
+
         # return tree
 
     def predict(self, X):
