@@ -52,7 +52,7 @@ class GATree():
         acc = accuracy_score(root.y_true, root.y_pred)
         return (1 - acc + 0.002 * root.size())
 
-    def fit(self, X, y, population_size=150):
+    def fit(self, X, y, population_size=150, max_iter=2000):
         """
         Fit a tree to a training set.
 
@@ -60,6 +60,7 @@ class GATree():
             X (pandas.DataFrame): Training data.
             y (pandas.Series): Target values.
             population_size (int, optional): Size of the population.
+            max_iter (int, optional): Maximum number of iterations.
 
         Returns:
             Node: The fitted tree.
@@ -79,38 +80,40 @@ class GATree():
             population.append(node.make_node(max_depth=self.max_depth, random=self.random,
                               att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count))
 
-        # Evaluation of population
-        for tree in population:
-            for i in range(X.shape[0]):
-                tree.predict_one(X.iloc[i], y.iloc[i])
-            tree.fitness = self.fitness_function(tree)
+        for i in range(max_iter+1):
+            # Evaluation of population
+            for tree in population:
+                for j in range(X.shape[0]):
+                    tree.predict_one(X.iloc[j], y.iloc[j])
+                tree.fitness = self.fitness_function(tree)
 
-        # Sort population by fitness
-        population.sort(key=lambda x: x.fitness, reverse=True)
+            # Sort population by fitness
+            population.sort(key=lambda x: x.fitness, reverse=True)
 
-        # Descendant generation
-        descendant = []
-        for i in range(0, population_size, 2):
-            # Tree selection
-            tree1 = population[i]
-            tree2 = population[i + 1]
+            if i != max_iter:
+                # Descendant generation
+                descendant = []
+                for j in range(0, population_size, 2):
+                    # Tree selection
+                    tree1 = population[j]
+                    tree2 = population[j + 1]
 
-            # Crossover between selected trees
-            crossover1 = Crossover.crossover(
-                tree1=tree1, tree2=tree2, random=self.random)
-            crossover2 = Crossover.crossover(
-                tree1=tree2, tree2=tree1, random=self.random)
+                    # Crossover between selected trees
+                    crossover1 = Crossover.crossover(
+                        tree1=tree1, tree2=tree2, random=self.random)
+                    crossover2 = Crossover.crossover(
+                        tree1=tree2, tree2=tree1, random=self.random)
 
-            # Mutation of new trees
-            mutation1 = Mutation.mutation(root=crossover1, att_indexes=self.att_indexes,
-                                          att_values=self.att_values, class_count=self.class_count, random=self.random)
-            mutation2 = Mutation.mutation(root=crossover2, att_indexes=self.att_indexes,
-                                          att_values=self.att_values, class_count=self.class_count, random=self.random)
+                    # Mutation of new trees
+                    mutation1 = Mutation.mutation(root=crossover1, att_indexes=self.att_indexes,
+                                                  att_values=self.att_values, class_count=self.class_count, random=self.random)
+                    mutation2 = Mutation.mutation(root=crossover2, att_indexes=self.att_indexes,
+                                                  att_values=self.att_values, class_count=self.class_count, random=self.random)
 
-            descendant.extend([mutation1, mutation2])
+                    descendant.extend([mutation1, mutation2])
 
-        # Replace old population with new population
-        population = descendant
+                # Replace old population with new population
+                population = descendant
 
         return population[0]
 
@@ -147,7 +150,7 @@ if __name__ == '__main__':
             float: The fitness value.
         """
         acc = accuracy_score(root.y_true, root.y_pred)
-        return (acc + root.size())
+        return (1 - acc + 0.002 * root.size())
 
     gatree = GATree(max_depth=5, fitness_function=fitness_function)
 
@@ -157,5 +160,5 @@ if __name__ == '__main__':
     X = pd.DataFrame(iris.data, columns=iris.feature_names)
     y = pd.Series(iris.target)
 
-    tree = gatree.fit(X=X, y=y, population_size=10)
+    tree = gatree.fit(X=X, y=y, population_size=10, max_iter=10)
     gatree.plot(tree)
