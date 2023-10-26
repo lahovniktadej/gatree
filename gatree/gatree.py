@@ -52,13 +52,14 @@ class GATree():
         acc = accuracy_score(root.y_true, root.y_pred)
         return (1 - acc + 0.002 * root.size())
 
-    def fit(self, X, y):
+    def fit(self, X, y, population_size=150):
         """
         Fit a tree to a training set.
 
         Args:
             X (pandas.DataFrame): Training data.
             y (pandas.Series): Target values.
+            population_size (int, optional): Size of the population.
 
         Returns:
             Node: The fitted tree.
@@ -71,27 +72,14 @@ class GATree():
         self.att_values[-1] = sorted(y.unique())
         self.class_count = len(self.att_values[-1])
 
-        # Random tree generation
+        # Population generation
         node = Node()
-        tree1 = node.make_node(max_depth=self.max_depth, random=self.random,
-                               att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count)
-        tree2 = node.make_node(max_depth=self.max_depth, random=self.random,
-                               att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count)
+        population = []
+        for _ in range(population_size):
+            population.append(node.make_node(max_depth=self.max_depth, random=self.random,
+                              att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count))
 
-        # Crossover between two randomly generated trees
-        tree = Crossover.crossover(
-            tree1=tree1, tree2=tree2, random=self.random)
-
-        # Mutation of the tree
-        tree = Mutation.mutation(root=tree, att_indexes=self.att_indexes,
-                                 att_values=self.att_values, class_count=self.class_count, random=self.random)
-
-        # Evaluation of the tree
-        for i in range(X.shape[0]):
-            tree.predict_one(X.iloc[i], y.iloc[i])
-        tree.fitness = self.fitness_function(tree)
-
-        return tree
+        # return tree
 
     def predict(self, X):
         pass
@@ -136,5 +124,5 @@ if __name__ == '__main__':
     X = pd.DataFrame(iris.data, columns=iris.feature_names)
     y = pd.Series(iris.target)
 
-    tree = gatree.fit(X, y)
+    tree = gatree.fit(X=X, y=y, population_size=10)
     gatree.plot(tree)
