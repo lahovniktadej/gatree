@@ -72,7 +72,7 @@ class GATree():
         self.att_values[-1] = sorted(y.unique())
         self.class_count = len(self.att_values[-1])
 
-        # Generation of population
+        # Generation of initial population
         node = Node()
         population = []
         for _ in range(population_size):
@@ -88,7 +88,31 @@ class GATree():
         # Sort population by fitness
         population.sort(key=lambda x: x.fitness, reverse=True)
 
-        # return tree
+        # Descendant generation
+        descendant = []
+        for i in range(0, population_size, 2):
+            # Tree selection
+            tree1 = population[i]
+            tree2 = population[i + 1]
+
+            # Crossover between selected trees
+            crossover1 = Crossover.crossover(
+                tree1=tree1, tree2=tree2, random=self.random)
+            crossover2 = Crossover.crossover(
+                tree1=tree2, tree2=tree1, random=self.random)
+
+            # Mutation of new trees
+            mutation1 = Mutation.mutation(root=crossover1, att_indexes=self.att_indexes,
+                                          att_values=self.att_values, class_count=self.class_count, random=self.random)
+            mutation2 = Mutation.mutation(root=crossover2, att_indexes=self.att_indexes,
+                                          att_values=self.att_values, class_count=self.class_count, random=self.random)
+
+            descendant.extend([mutation1, mutation2])
+
+        # Replace old population with new population
+        population = descendant
+
+        return population[0]
 
     def predict(self, X):
         pass
