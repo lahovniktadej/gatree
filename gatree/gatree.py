@@ -52,7 +52,7 @@ class GATree():
         acc = accuracy_score(root.y_true, root.y_pred)
         return (1 - acc + 0.002 * root.size())
 
-    def fit(self, X, y, population_size=150, max_iter=2000):
+    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1):
         """
         Fit a tree to a training set.
 
@@ -61,6 +61,7 @@ class GATree():
             y (pandas.Series): Target values.
             population_size (int, optional): Size of the population.
             max_iter (int, optional): Maximum number of iterations.
+            mutation_probability (float, optional): Probability of mutation.
 
         Returns:
             Node: The fitted tree.
@@ -108,10 +109,14 @@ class GATree():
                         tree1=tree2, tree2=tree1, random=self.random)
 
                     # Mutation of new trees
-                    mutation1 = Mutation.mutation(root=crossover1, att_indexes=self.att_indexes,
-                                                  att_values=self.att_values, class_count=self.class_count, random=self.random)
-                    mutation2 = Mutation.mutation(root=crossover2, att_indexes=self.att_indexes,
-                                                  att_values=self.att_values, class_count=self.class_count, random=self.random)
+                    mutation1 = crossover1
+                    mutation2 = crossover2
+                    if self.random.random() < mutation_probability:
+                        mutation1 = Mutation.mutation(root=crossover1, att_indexes=self.att_indexes,
+                                                      att_values=self.att_values, class_count=self.class_count, random=self.random)
+                    if self.random.random() < mutation_probability:
+                        mutation2 = Mutation.mutation(root=crossover2, att_indexes=self.att_indexes,
+                                                      att_values=self.att_values, class_count=self.class_count, random=self.random)
 
                     descendant.extend([mutation1, mutation2])
 
@@ -163,5 +168,6 @@ if __name__ == '__main__':
     X = pd.DataFrame(iris.data, columns=iris.feature_names)
     y = pd.Series(iris.target)
 
-    tree = gatree.fit(X=X, y=y, population_size=9, max_iter=10)
+    tree = gatree.fit(X=X, y=y, population_size=10,
+                      max_iter=10, mutation_probability=0.25)
     gatree.plot(tree)
