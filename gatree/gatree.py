@@ -72,12 +72,18 @@ class GATree():
         self.att_values[-1] = sorted(y.unique())
         self.class_count = len(self.att_values[-1])
 
-        # Population generation
+        # Generation of population
         node = Node()
         population = []
         for _ in range(population_size):
             population.append(node.make_node(max_depth=self.max_depth, random=self.random,
                               att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count))
+
+        # Evaluation of population
+        for tree in population:
+            for i in range(X.shape[0]):
+                tree.predict_one(X.iloc[i], y.iloc[i])
+            tree.fitness = self.fitness_function(tree)
 
         # return tree
 
