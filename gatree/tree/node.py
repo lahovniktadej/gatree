@@ -298,34 +298,3 @@ class Node:
             str: String representation of this node.
         """
         return self.__str__()
-
-
-if __name__ == "__main__":
-    from sklearn.metrics import accuracy_score
-
-    # Tree generation
-    left_child = Node(att_index=1, att_value=3)
-    left_grandchild1 = Node(att_index=2, att_value=2)
-    left_grandchild2 = Node(att_index=2, att_value=4)
-    left_child.set_left(left_grandchild1)
-    left_child.set_right(left_grandchild2)
-
-    right_child = Node(att_index=1, att_value=7)
-    right_grandchild1 = Node(att_index=2, att_value=6)
-    right_grandchild2 = Node(att_index=2, att_value=8)
-    right_child.set_left(right_grandchild1)
-    right_child.set_right(right_grandchild2)
-
-    parent_node = Node(att_index=0, att_value=5)
-    parent_node.set_left(left_child)
-    parent_node.set_right(right_child)
-
-    # Create instance and predict class
-    instance = [6, 4, 5]
-    actual_class = 1
-    predicted_class = parent_node.predict_one(instance, actual_class)
-
-    # Calculate accuracy
-    accuracy = accuracy_score(parent_node.y_true, parent_node.y_pred)
-    print(f"Predicted class for instance: {parent_node.y_pred}")
-    print(f"Accuracy: {accuracy}")
