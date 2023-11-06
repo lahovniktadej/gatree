@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from tree.node import Node
+from ga.selection import Selection
 from ga.crossover import Crossover
 from ga.mutation import Mutation
 from sklearn.metrics import accuracy_score
@@ -54,7 +55,7 @@ class GATree():
         acc = accuracy_score(root.y_true, root.y_pred)
         return (1 - acc + 0.002 * root.size())
 
-    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1):
+    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1, selection_tournament_size=2):
         """
         Fit a tree to a training set.
 
@@ -64,6 +65,8 @@ class GATree():
             population_size (int, optional): Size of the population.
             max_iter (int, optional): Maximum number of iterations.
             mutation_probability (float, optional): Probability of mutation.
+            elite_size (int, optional): Number of elite trees.
+            selection_tournament_size (int, optional): Number of trees in tournament.
 
         Returns:
             Node: The fitted tree.
@@ -100,12 +103,8 @@ class GATree():
                 # Descendant generation
                 descendant = []
                 for j in range(0, len(population), 2):
-                    # Tree selection
-                    tree1 = population[j]
-                    if j+1 >= len(population):
-                        # Skip last tree if population size is odd
-                        continue
-                    tree2 = population[j + 1]
+                    tree1, tree2 = Selection.selection(
+                        population=population, selection_tournament_size=selection_tournament_size, random=self.random)
 
                     # Crossover between selected trees
                     crossover1 = Crossover.crossover(
@@ -180,6 +179,6 @@ if __name__ == '__main__':
     X = pd.DataFrame(iris.data, columns=iris.feature_names)
     y = pd.Series(iris.target)
 
-    gatree.fit(X=X, y=y, population_size=10,
-               max_iter=10, mutation_probability=0.25)
+    gatree.fit(X=X, y=y, population_size=3, max_iter=10,
+               mutation_probability=0.25, elite_size=1, selection_tournament_size=2)
     gatree.plot()

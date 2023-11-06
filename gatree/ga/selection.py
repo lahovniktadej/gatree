@@ -1,27 +1,38 @@
-import random
+class Selection:
+    """
+    Selection of trees for crossover and mutation
 
+    Args:
+        population (list): List of trees.
+        selection_tournament_size (int): Number of trees to select.
+        random (Random): Random number generator.
+    """
+    def selection(population, selection_tournament_size, random):
+        """
+        Select two trees for crossover or mutation.
 
-class TournamentSelector:
-    def getSelection(self, population, selection_tournament_size, elite_size):
-        selection = []
+        Args:
+            population (list): List of trees.
+            selection_tournament_size (int): Number of trees to select.
+            random (Random): Random number generator.
 
-        # Number of pairs
-        selection_size = len(population) - elite_size
-        if selection_size % 2 == 1:
-            selection_size += 1
+        Returns:
+            tuple: The two selected trees.
+        """
+        valid = False
+        while not valid:
+            selection = []
 
-        for i in range(selection_size):
-            ints = random.sample(range(len(population)),
-                                 selection_tournament_size)
-            candidates = [population[idx] for idx in ints]
+            # Select two trees
+            for _ in range(2):
+                indices = random.choice(len(population),
+                                        selection_tournament_size, replace=False)
+                candidates = [population[i] for i in indices]
+                candidates.sort(key=lambda x: x.fitness, reverse=True)
+                selection.append(candidates[0])
 
-            candidates.sort()
+            # Check if trees are different
+            if selection[0] != selection[1]:
+                valid = True
 
-            # Check if spouse1 equals spouse2
-            if i % 2 == 1 and candidates[0] == selection[-1]:
-                i -= 1
-                continue
-
-            selection.append(candidates[0])
-
-        return selection
+        return selection[0], selection[1]
