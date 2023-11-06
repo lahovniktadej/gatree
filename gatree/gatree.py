@@ -14,6 +14,7 @@ class GATree():
         max_depth (int, optional): Maximum depth of the tree.
         random (Random, optional): Random number generator.
         fitness_function (function, optional): Fitness function for the genetic algorithm.
+        _tree (Node, optional): The fitted tree.
 
     Attributes:
         max_depth (int, optional): Maximum depth of the tree.
@@ -38,6 +39,7 @@ class GATree():
         self.max_depth = max_depth
         self.random = random if random is not None else np.random
         self.fitness_function = fitness_function if fitness_function is not None else self.default_fitness_function
+        self._tree = None
 
     def default_fitness_function(self, root):
         """ 
@@ -52,7 +54,7 @@ class GATree():
         acc = accuracy_score(root.y_true, root.y_pred)
         return (1 - acc + 0.002 * root.size())
 
-    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1):
+    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1):
         """
         Fit a tree to a training set.
 
@@ -92,6 +94,9 @@ class GATree():
             population.sort(key=lambda x: x.fitness, reverse=True)
 
             if i != max_iter:
+                # Elites
+                elites = population[:elite_size]
+
                 # Descendant generation
                 descendant = []
                 for j in range(0, len(population), 2):
@@ -120,10 +125,14 @@ class GATree():
 
                     descendant.extend([mutation1, mutation2])
 
+                # Elites + descendants
+                descendant.sort(key=lambda x: x.fitness, reverse=True)
+                descendant = elites + descendant[:population_size - elite_size]
+
                 # Replace old population with new population
                 population = descendant
 
-        return population[0]
+        self._tree = population[0]
 
     def predict(self, X):
         pass
@@ -136,6 +145,9 @@ class GATree():
             node (Node, optional): Current node to plot.
             prefix (str, optional): Prefix for the current node.
         """
+        if node is None:
+            node = self._tree
+
         if node is not None:
             if node.att_index != -1:
                 print(prefix + '├── {} > {}'.format(self.X.columns.tolist()
@@ -168,6 +180,6 @@ if __name__ == '__main__':
     X = pd.DataFrame(iris.data, columns=iris.feature_names)
     y = pd.Series(iris.target)
 
-    tree = gatree.fit(X=X, y=y, population_size=10,
-                      max_iter=10, mutation_probability=0.25)
-    gatree.plot(tree)
+    gatree.fit(X=X, y=y, population_size=10,
+               max_iter=10, mutation_probability=0.25)
+    gatree.plot()
