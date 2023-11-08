@@ -144,7 +144,19 @@ class GATree():
         self._tree = population[0]
 
     def predict(self, X):
-        pass
+        """
+        Predict classes for the given data.
+
+        Args:
+            X (pandas.DataFrame): Data to predict.
+
+        Returns:
+            list: Predicted classes.
+        """
+        y_pred = []
+        for i in range(X.shape[0]):
+            y_pred.append(self._tree.predict_one(X.iloc[i]))
+        return y_pred
 
     def plot(self, node=None, prefix=''):
         """
