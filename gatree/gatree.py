@@ -26,6 +26,9 @@ class GATree():
         att_values (dict): Dictionary of attribute values.
         class_count (int): Number of classes.
         fitness_function (function): Fitness function for the genetic algorithm.
+        _tree (Node): The fitted tree.
+        _best_fitness (list): List of best fitness values for each iteration.
+        _avg_fitness (list): List of average fitness values for each iteration.
     """
 
     def __init__(self, max_depth=None, random=None, fitness_function=None):
@@ -41,6 +44,8 @@ class GATree():
         self.random = random if random is not None else np.random
         self.fitness_function = fitness_function if fitness_function is not None else self.default_fitness_function
         self._tree = None
+        self._best_fitness = []
+        self._avg_fitness = []
 
     def default_fitness_function(self, root):
         """ 
@@ -95,6 +100,11 @@ class GATree():
 
             # Sort population by fitness
             population.sort(key=lambda x: x.fitness, reverse=True)
+
+            # Log best and average fitness
+            self._best_fitness.append(population[0].fitness)
+            self._avg_fitness.append(
+                sum([tree.fitness for tree in population]) / len(population))
 
             if i != max_iter:
                 # Elites
