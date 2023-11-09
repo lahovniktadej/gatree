@@ -16,6 +16,8 @@ class GATree():
         random (Random, optional): Random number generator.
         fitness_function (function, optional): Fitness function for the genetic algorithm.
         _tree (Node, optional): The fitted tree.
+        _best_fitness (list, optional): List of best fitness values for each iteration.
+        _avg_fitness (list, optional): List of average fitness values for each iteration.
 
     Attributes:
         max_depth (int, optional): Maximum depth of the tree.
@@ -26,12 +28,13 @@ class GATree():
         att_values (dict): Dictionary of attribute values.
         class_count (int): Number of classes.
         fitness_function (function): Fitness function for the genetic algorithm.
+        random_state (int): Seed for reproducibility.
         _tree (Node): The fitted tree.
         _best_fitness (list): List of best fitness values for each iteration.
         _avg_fitness (list): List of average fitness values for each iteration.
     """
 
-    def __init__(self, max_depth=None, random=None, fitness_function=None):
+    def __init__(self, max_depth=None, random=None, fitness_function=None, random_state=None):
         """
         Initialize the Genetic Algorithm Tree Classifier.
 
@@ -39,8 +42,11 @@ class GATree():
             max_depth (int, optional): Maximum depth of the tree.
             random (Random, optional): Random number generator.
             fitness_function (function, optional): Fitness function for the genetic algorithm.
+            random_state (int, optional): Seed reproducibility.
         """
         self.max_depth = max_depth
+        if random is None and random_state is not None:
+            np.random.seed(random_state)
         self.random = random if random is not None else np.random
         self.fitness_function = fitness_function if fitness_function is not None else self.default_fitness_function
         self._tree = None
@@ -201,6 +207,11 @@ if __name__ == '__main__':
     X = pd.DataFrame(iris.data, columns=iris.feature_names)
     y = pd.Series(iris.target)
 
-    gatree.fit(X=X, y=y, population_size=3, max_iter=10,
-               mutation_probability=0.25, elite_size=1, selection_tournament_size=2)
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=1)
+
+    gatree.fit(X=X_train, y=y_train, population_size=10, max_iter=10,
+               mutation_probability=0.25, elite_size=2, selection_tournament_size=2)
+    y_pred = gatree.predict(X_test)
     gatree.plot()
