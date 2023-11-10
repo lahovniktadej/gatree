@@ -3,7 +3,8 @@ GATree
 
 .. toctree::
 
-   node
    gatree
+   node
+   selection
    crossover
    mutation
