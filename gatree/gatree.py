@@ -1,9 +1,8 @@
-import pandas as pd
 import numpy as np
-from tree.node import Node
-from ga.selection import Selection
-from ga.crossover import Crossover
-from ga.mutation import Mutation
+from gatree.tree.node import Node
+from gatree.ga.selection import Selection
+from gatree.ga.crossover import Crossover
+from gatree.ga.mutation import Mutation
 from sklearn.metrics import accuracy_score
 
 
@@ -119,6 +118,7 @@ class GATree():
                 # Descendant generation
                 descendant = []
                 for j in range(0, len(population), 2):
+                    # Tournament selection
                     tree1, tree2 = Selection.selection(
                         population=population, selection_tournament_size=selection_tournament_size, random=self.random)
 
@@ -138,6 +138,7 @@ class GATree():
                         mutation2 = Mutation.mutation(root=crossover2, att_indexes=self.att_indexes,
                                                       att_values=self.att_values, class_count=self.class_count, random=self.random)
 
+                    # Add new trees to descendant population
                     descendant.extend([mutation1, mutation2])
 
                 # Elites + descendants
@@ -186,32 +187,3 @@ class GATree():
             if node.left is not None or node.right is not None:
                 self.plot(node.left, prefix + '    ')
                 self.plot(node.right, prefix + '    ')
-
-
-if __name__ == '__main__':
-    def fitness_function(root):
-        """ 
-        Fitness function for the genetic algorithm.
-
-        Returns:
-            float: The fitness value.
-        """
-        acc = accuracy_score(root.y_true, root.y_pred)
-        return (1 - acc + 0.002 * root.size())
-
-    gatree = GATree(max_depth=5, fitness_function=fitness_function)
-
-    from sklearn import datasets
-    iris = datasets.load_iris()
-
-    X = pd.DataFrame(iris.data, columns=iris.feature_names)
-    y = pd.Series(iris.target)
-
-    from sklearn.model_selection import train_test_split
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=1)
-
-    gatree.fit(X=X_train, y=y_train, population_size=10, max_iter=10,
-               mutation_probability=0.25, elite_size=2, selection_tournament_size=2)
-    y_pred = gatree.predict(X_test)
-    gatree.plot()
