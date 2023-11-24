@@ -53,7 +53,3 @@ class TestSelection(unittest.TestCase):
         # Assert that the fitness of the selected trees is correct
         self.assertEqual(selected_tree_1.fitness, 3)
         self.assertEqual(selected_tree_2.fitness, 2)
-
-
-if __name__ == '__main__':
-    unittest.main()

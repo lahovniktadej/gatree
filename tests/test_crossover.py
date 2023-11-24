@@ -32,7 +32,3 @@ class TestCrossover(unittest.TestCase):
         # Check if result isn't equal to tree1 or tree2
         self.assertNotEqual(result, tree1)
         self.assertNotEqual(result, tree2)
-
-
-if __name__ == '__main__':
-    unittest.main()
