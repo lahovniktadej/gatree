@@ -1,4 +1,3 @@
-import pytest
 import unittest
 import numpy as np
 from gatree.tree.node import Node
@@ -17,7 +16,6 @@ class TestCrossover(unittest.TestCase):
         """
         Test the crossover method.
         """
-
         # Create test trees and a random number generator
         random = np.random
         tree1 = Node().make_node(max_depth=1, random=random,
