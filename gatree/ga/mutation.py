@@ -1,4 +1,4 @@
-from tree.node import Node
+from gatree.tree.node import Node
 
 
 class Mutation:
