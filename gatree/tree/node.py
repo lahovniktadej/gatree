@@ -207,8 +207,10 @@ class Node:
                 node = Node(att_index=att_index, att_value=att_value)
                 node.left = self.make_node(depth=depth + 1, max_depth=max_depth, random=random,
                                            att_indexes=att_indexes, att_values=att_values, class_count=class_count)
+                node.left.parent = node
                 node.right = self.make_node(depth=depth + 1, max_depth=max_depth, random=random,
                                             att_indexes=att_indexes, att_values=att_values, class_count=class_count)
+                node.right.parent = node
             else:  # result (leaf)
                 r = random.randint(0, class_count)
                 node = Node(att_index=-1, att_value=r)
