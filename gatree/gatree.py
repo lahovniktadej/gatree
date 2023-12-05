@@ -1,11 +1,12 @@
-import time
-from multiprocessing.pool import Pool
 import numpy as np
+from joblib import Parallel, delayed
+from sklearn.metrics import accuracy_score
+
+# GATree
 from gatree.tree.node import Node
 from gatree.ga.selection import Selection
 from gatree.ga.crossover import Crossover
 from gatree.ga.mutation import Mutation
-from sklearn.metrics import accuracy_score
 
 
 class GATree():
@@ -16,6 +17,8 @@ class GATree():
         max_depth (int, optional): Maximum depth of the tree.
         random (Random, optional): Random number generator.
         fitness_function (function, optional): Fitness function for the genetic algorithm.
+        n_jobs (int, optional): Number of jobs to run in parallel.
+        random_state (int, optional): Seed for reproducibility.
         _tree (Node, optional): The fitted tree.
         _best_fitness (list, optional): List of best fitness values for each iteration.
         _avg_fitness (list, optional): List of average fitness values for each iteration.
@@ -29,13 +32,14 @@ class GATree():
         att_values (dict): Dictionary of attribute values.
         class_count (int): Number of classes.
         fitness_function (function): Fitness function for the genetic algorithm.
+        n_jobs (int): Number of jobs to run in parallel.
         random_state (int): Seed for reproducibility.
         _tree (Node): The fitted tree.
         _best_fitness (list): List of best fitness values for each iteration.
         _avg_fitness (list): List of average fitness values for each iteration.
     """
 
-    def __init__(self, max_depth=None, random=None, fitness_function=None, random_state=None):
+    def __init__(self, max_depth=None, random=None, fitness_function=None, n_jobs=1, random_state=None):
         """
         Initialize the Genetic Algorithm Tree Classifier.
 
@@ -50,6 +54,7 @@ class GATree():
             np.random.seed(random_state)
         self.random = random if random is not None else np.random
         self.fitness_function = fitness_function if fitness_function is not None else self.default_fitness_function
+        self.n_jobs = n_jobs
         self._tree = None
         self._best_fitness = []
         self._avg_fitness = []
@@ -91,7 +96,6 @@ class GATree():
         Returns:
             Node: The fitted tree.
         """
-        start = time.time()
         self.X = X
         self.y = y
         self.att_indexes = np.arange(X.shape[1])
@@ -107,23 +111,10 @@ class GATree():
             population.append(node.make_node(max_depth=self.max_depth, random=self.random,
                               att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count))
 
-        times = {'evaluation': 0, 'selection': 0,
-                 'crossover': 0, 'mutation': 0}
         for i in range(max_iter+1):
-            start_time = time.time()
-
             # Evaluation of population
-            args = [(tree, X, y, self.fitness_function) for tree in population]
-            with Pool(processes=5) as pool:
-                population = pool.starmap(GATree._predict_and_evaluate, args)
-
-            """ for tree in population:
-                for j in range(X.shape[0]):
-                    tree.predict_one(X.iloc[j], y.iloc[j])
-                tree.fitness = self.fitness_function(tree) """
-
-            end_time = time.time()
-            times['evaluation'] += end_time - start_time
+            population = Parallel(n_jobs=self.n_jobs)(delayed(GATree._predict_and_evaluate)(
+                tree, X, y, self.fitness_function) for tree in population)
 
             # Sort population by fitness
             population.sort(key=lambda x: x.fitness, reverse=True)
@@ -139,24 +130,17 @@ class GATree():
 
                 # Descendant generation
                 descendant = []
-                for j in range(0, len(population), 2):
-                    start_time = time.time()
+                for _ in range(0, len(population), 2):
                     # Tournament selection
                     tree1, tree2 = Selection.selection(
                         population=population, selection_tournament_size=selection_tournament_size, random=self.random)
-                    end_time = time.time()
-                    times['selection'] += end_time - start_time
 
-                    start_time = time.time()
                     # Crossover between selected trees
                     crossover1 = Crossover.crossover(
                         tree1=tree1, tree2=tree2, random=self.random)
                     crossover2 = Crossover.crossover(
                         tree1=tree2, tree2=tree1, random=self.random)
-                    end_time = time.time()
-                    times['crossover'] += end_time - start_time
 
-                    start_time = time.time()
                     # Mutation of new trees
                     mutation1 = crossover1
                     mutation2 = crossover2
@@ -166,8 +150,6 @@ class GATree():
                     if self.random.random() < mutation_probability:
                         mutation2 = Mutation.mutation(root=crossover2, att_indexes=self.att_indexes,
                                                       att_values=self.att_values, class_count=self.class_count, random=self.random)
-                    end_time = time.time()
-                    times['mutation'] += end_time - start_time
 
                     # Add new trees to descendant population
                     descendant.extend([mutation1, mutation2])
@@ -179,14 +161,6 @@ class GATree():
                 # Replace old population with new population
                 population = descendant
 
-        end = time.time()
-
-        print('max_iter: ', max_iter)
-        print('population_size: ', population_size)
-        for key, value in times.items():
-            print('{}: {}'.format(key, value))
-
-        print('execution: ', end - start)
         self._tree = population[0]
 
     def predict(self, X):
