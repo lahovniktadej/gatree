@@ -30,7 +30,8 @@ The documentation is organised into the following sections:
 .. _about:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: About
 
    about/license
+   about/code_of_conduct
