@@ -75,6 +75,18 @@ class GATree():
 
     @staticmethod
     def _predict_and_evaluate(tree, X, y, fitness_function):
+        """
+        Evaluate a tree on a training set (in parallel)
+
+        Args:
+            tree (Node): Tree to evaluate.
+            X (pandas.DataFrame): Training data.
+            y (pandas.Series): Target values.
+            fitness_function (function): Fitness function for the genetic algorithm.
+
+        Returns:
+            Node: The evaluated tree.
+        """
         for j in range(X.shape[0]):
             tree.predict_one(X.iloc[j], y.iloc[j])
         tree.fitness = fitness_function(tree)
