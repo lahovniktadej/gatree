@@ -187,7 +187,8 @@ class GATree():
         """
         y_pred = []
         for i in range(X.shape[0]):
-            y_pred.append(self._tree.predict_one(X.iloc[i]))
+            index = self._tree.predict_one(X.iloc[i])
+            y_pred.append(self.att_values[-1][index])
         return y_pred
 
     def plot(self, node=None, prefix=''):

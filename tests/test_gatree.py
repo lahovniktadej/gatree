@@ -65,6 +65,3 @@ class TestGATree(unittest.TestCase):
 
         # Assert that the prediction is a list of integers
         self.assertIsInstance(y_pred, list)
-
-        # Assert that the prediction is a list of integers
-        self.assertIsInstance(y_pred[0], int)
