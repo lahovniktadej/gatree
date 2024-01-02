@@ -1,8 +1,20 @@
 GATree
 ======
 
+* **Free software:** MIT license
+* **GitHub**: https://github.com/lahovniktadej/gatree
+* **Python**: 3.9.x, 3.10.x
+* **Operating systems**: Windows, Ubuntu, macOS
+
+About
+-----
+
+GATree is a Python library designed for implementing generative decision trees using a genetic algorithm approach. The library provides functionalities for selection, mutation, and crossover operations within the decision tree structure, allowing users to evolve and optimize decision trees for various classification tasks. 🌲🧬
+
+The library's core objective is to empower users in creating and fine-tuning decision trees through an evolutionary process, opening avenues for innovative approaches to classification problems. GATree enables the dynamic growth and adaptation of decision trees, offering a flexible and powerful tool for machine learning enthusiasts and practitioners. 🚀🌿
+
 Documentation
-=============
+-------------
 
 The documentation is organised into the following sections:
 
