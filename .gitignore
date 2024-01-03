@@ -3,3 +3,4 @@ poetry.lock
 __pycache__
 /docs/build
 .pytest_cache
+/dist
