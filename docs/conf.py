@@ -22,7 +22,7 @@ copyright = '2023, Tadej Lahovnik, Sašo Karakatič'
 author = 'Tadej Lahovnik, Sašo Karakatič'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.1'
+release = '0.1.2'
 
 # -- General configuration ---------------------------------------------------
 
