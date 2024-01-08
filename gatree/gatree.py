@@ -70,7 +70,6 @@ class GATree():
         Returns:
             float: The fitness value.
         """
-        acc = accuracy_score(root.y_true, root.y_pred)
         return accuracy_score(root.y_true, root.y_pred) - 0.002 * root.size()
 
     @staticmethod
