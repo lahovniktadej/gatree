@@ -87,6 +87,7 @@ class GATree():
             Node: The evaluated tree.
         """
         for j in range(X.shape[0]):
+            # Predict class for current instance
             tree.predict_one(X.iloc[j], y.iloc[j])
         tree.fitness = fitness_function(tree)
         return tree
@@ -123,6 +124,10 @@ class GATree():
                               att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count))
 
         for i in range(max_iter+1):
+            # Clear previous evaluation
+            for tree in population:
+                tree.clear_evaluation()
+
             # Evaluation of population
             population = Parallel(n_jobs=self.n_jobs)(delayed(GATree._predict_and_evaluate)(
                 tree, X, y, self.fitness_function) for tree in population)
