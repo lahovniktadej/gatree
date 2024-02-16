@@ -1,6 +1,9 @@
+name: JOSS
+
 on:
   push:
-    - paths:
+    branches: [ main ]
+    paths:
       - 'paper.md'
       - 'paper.bib'
 

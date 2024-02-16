@@ -3,6 +3,10 @@ name: GATree
 on:
   push:
     branches: [ main ]
+    paths:
+      - '/gatree/**'
+      - '/tests/**'
+      - 'pyproject.toml'
   pull_request:
     branches: [ main ]
 
