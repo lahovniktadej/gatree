@@ -5,6 +5,7 @@ tags:
   - classifier
   - genetic algorithm
   - machine learning
+  - evolutionary algorithm
 authors:
   - name: Tadej Lahovnik
     orcid: 0009-0005-9689-2991
