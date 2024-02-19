@@ -4,3 +4,7 @@ __pycache__
 /docs/build
 .pytest_cache
 /dist
+/paper/*.jats
+/paper/media
+/paper/*.pdf
+*.bat

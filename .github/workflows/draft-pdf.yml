@@ -4,8 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'paper.md'
-      - 'paper.bib'
+      - '/paper/**'
 
 jobs:
   paper:

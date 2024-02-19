@@ -18,7 +18,7 @@ authors:
 affiliations:
   - name: University of Maribor, Maribor, Slovenia
     index: 1
-date: 19 February 2024
+date: XX February 2024
 bibliography: paper.bib
 ---
 
@@ -58,16 +58,12 @@ print(f'Accuracy: {accuracy:.2f}')
 
 In this example, we load the iris dataset and split it into training and testing sets. Next, we create an instance of the GATree classifier and define its parameters, such as the number of jobs to run in parallel and the random state for reproducibility. We then fit the classifier to the training data using a population size of 100 and a maximum of 100 iterations. Finally, we make predictions on the testing set and evaluate the accuracy of the classifier. The GATree classifier uses a genetic algorithm to evolve and optimize the decision tree structure for the classification task. This configuration achieves an accuracy of 0.93 on the testing set, demonstrating the effectiveness of the GATree package for classification tasks.
 
-The image below depicts the average fitness value at each iteration of the genetic algorithm for the iris dataset, demonstrating how the algorithm converges towards an optimal solution.
+\autoref{fig:fitness_plot} depicts the average fitness value at each iteration of the genetic algorithm for the iris dataset, demonstrating how the algorithm converges towards an optimal solution.
 
-<p align="center">
-  <img src=".github/images/fitness_value.png" alt="Fitness value" width="400">
-</p>
+![Average fitness value at each iteration.\label{fig:fitness_plot}](./images/fitness_value.png){ width=50% }
 
-The following image shows the final decision tree obtained by the GATree classifier after fitting it to the iris dataset.
+\autoref{fig:decision_tree} shows the final decision tree obtained by the GATree classifier after fitting it to the iris dataset.
 
-<p align="center">
-  <img src=".github/images/decision_tree.png" alt="Decision tree" width="400">
-</p>
+![Final decision tree obtained by the GATree classifier.\label{fig:decision_tree}](./images/decision_tree.png){ width=60% }
 
 # References
