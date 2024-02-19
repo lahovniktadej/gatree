@@ -16,8 +16,8 @@ authors:
     equal-contrib: true
     affiliation: 1
 affiliations:
- - name: University of Maribor, Maribor, Slovenia
-   index: 1
+  - name: University of Maribor, Maribor, Slovenia
+    index: 1
 date: 19 February 2024
 bibliography: paper.bib
 ---
@@ -60,10 +60,14 @@ In this example, we load the iris dataset and split it into training and testing
 
 The image below depicts the average fitness value at each iteration of the genetic algorithm for the iris dataset, demonstrating how the algorithm converges towards an optimal solution.
 
-![Fitness value](.github/images/fitness_value.png)
+<p align="center">
+  <img src=".github/images/fitness_value.png" alt="Fitness value" width="400">
+</p>
 
 The following image shows the final decision tree obtained by the GATree classifier after fitting it to the iris dataset.
 
-![Decision tree](.github/images/decision_tree.png)
+<p align="center">
+  <img src=".github/images/decision_tree.png" alt="Decision tree" width="400">
+</p>
 
 # References
