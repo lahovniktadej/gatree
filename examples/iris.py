@@ -26,5 +26,4 @@ gatree.fit(X=X_train, y=y_train, population_size=100, max_iter=100)
 y_pred = gatree.predict(X_test)
 
 # Evaluate the accuracy of the classifier
-accuracy = accuracy_score(y_test, y_pred)
-print(f'Accuracy: {accuracy:.2f}')
+print(accuracy_score(y_test, y_pred))

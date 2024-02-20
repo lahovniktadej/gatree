@@ -14,7 +14,7 @@ After installing Poetry and cloning the project from GitHub, execute the followi
 
 .. code:: sh
 
-    $ poetry install
+    poetry install
 
 All of the project's dependencies should be installed and the project should be ready for further development. Note that Poetry creates a separate virtual environment for the project.
 

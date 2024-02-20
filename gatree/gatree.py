@@ -11,7 +11,7 @@ from gatree.ga.mutation import Mutation
 
 class GATree():
     """
-    Genetic Algorithm Tree Classifier.
+    Evolutionary decision tree classifier.
 
     Args:
         max_depth (int, optional): Maximum depth of the tree.
@@ -19,9 +19,6 @@ class GATree():
         fitness_function (function, optional): Fitness function for the genetic algorithm.
         n_jobs (int, optional): Number of jobs to run in parallel.
         random_state (int, optional): Seed for reproducibility.
-        _tree (Node, optional): The fitted tree.
-        _best_fitness (list, optional): List of best fitness values for each iteration.
-        _avg_fitness (list, optional): List of average fitness values for each iteration.
 
     Attributes:
         max_depth (int, optional): Maximum depth of the tree.
