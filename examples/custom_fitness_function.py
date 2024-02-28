@@ -20,7 +20,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 # Custom fitness function
 def fitness_function(root):
-    return accuracy_score(root.y_true, root.y_pred) - 0.05 * root.size()
+    return 1 - accuracy_score(root.y_true, root.y_pred) + (0.05 * root.size())
 
 # Create and fit the GATree classifier
 gatree = GATree(fitness_function=fitness_function, n_jobs=16, random_state=123)

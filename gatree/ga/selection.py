@@ -28,7 +28,7 @@ class Selection:
                 indices = random.choice(len(population),
                                         selection_tournament_size, replace=False)
                 candidates = [population[i] for i in indices]
-                candidates.sort(key=lambda x: x.fitness, reverse=True)
+                candidates.sort(key=lambda x: x.fitness, reverse=False)
                 selection.append(candidates[0])
 
             # Check if trees are different

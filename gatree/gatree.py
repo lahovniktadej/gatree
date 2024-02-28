@@ -67,7 +67,7 @@ class GATree():
         Returns:
             float: The fitness value.
         """
-        return accuracy_score(root.y_true, root.y_pred) - 0.002 * root.size()
+        return 1 - accuracy_score(root.y_true, root.y_pred) + (0.002 * root.size())
 
     @staticmethod
     def _predict_and_evaluate(tree, X, y, fitness_function):
@@ -130,7 +130,7 @@ class GATree():
                 tree, X, y, self.fitness_function) for tree in population)
 
             # Sort population by fitness
-            population.sort(key=lambda x: x.fitness, reverse=True)
+            population.sort(key=lambda x: x.fitness, reverse=False)
 
             # Log best and average fitness
             self._best_fitness.append(population[0].fitness)
@@ -168,7 +168,7 @@ class GATree():
                     descendant.extend([mutation1, mutation2])
 
                 # Elites + descendants
-                descendant.sort(key=lambda x: x.fitness, reverse=True)
+                descendant.sort(key=lambda x: x.fitness, reverse=False)
                 descendant = elites + descendant[:population_size - elite_size]
 
                 # Replace old population with new population
