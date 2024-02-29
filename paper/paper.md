@@ -1,5 +1,5 @@
 ---
-title: 'GATree: A Python package for an evolutionary decision tree classifier'
+title: 'GATree: Evolutionary decision tree classifier in Python'
 tags:
   - Python
   - genetic algorithm
@@ -24,13 +24,25 @@ bibliography: paper.bib
 
 # Summary
 
+_GATree_ is a Python library that simplifies the way decision trees are constructed and optimized for classification machine learning tasks. Leveraging the principles of genetic algorithms, _GATree_ allows for the dynamic evolution of decision tree structures, providing a flexible and powerful tool for machine learning practitioners. Unlike traditional decision tree algorithms that follow a deterministic path based on statistical models or information theory, _GATree_ introduces an evolutionary process where selection, mutation, and crossover operations guide the development of optimized trees. This method enhances the adaptability and performance of decision trees and opens new possibilities for addressing complex classification problems. _GATree_ stands out as a user-friendly, highly customizable solution, enabling users to tailor fitness functions and algorithm parameters to meet specific project needs, whether in academic research or practical applications.
 
+# Overview
+
+At the heart of _GATree_'s methodology lies the integration of genetic algorithms with decision tree construction, a process inspired by natural evolution [@koza1990concept]. This evolutionary approach begins with the random generation of an initial population of decision trees, each evaluated for their fitness in solving a given supervised task on the training data. Fitness evaluation typically considers factors such as classification accuracy and tree complexity, striving for a balance that rewards both the quality of the decisions and the generalizability of the decisions [@bot2000application; barros2012survey].
+
+Following the principles of natural selection, trees that perform better are more likely to contribute to the next generation, either through direct selection or by producing offspring via crossover and mutation operations. Crossover involves the exchange of genetic material (i.e., tree nodes or branches) between two parent trees, while mutation introduces random changes to a tree's structure, promoting genetic diversity within the population. This iterative process, presented in \autoref{fig:ga} of selection, crossover, and mutation continues across generations, with the algorithm converging towards more effective decision tree solutions over time.
+
+![Overview of the evolution process.\label{fig:ga}](./images/ga.png){ width=60% }
 
 # Statement of need
 
-GATree, an evolutionary decision tree classifier, is a Python library with a modular and extensible architecture comprised of two classes: _GATree_ and _Node_. The _GATree_ class is responsible for the genetic algorithm by utilising operator classes, such as _Selection_, _Crossover_, and _Mutation_. The _Node_ class handles the decision tree structure and its operations. The library is user-friendly and highly customisable - users can easily define custom fitness functions and other parameters to meet their needs. While primarily intended for classification tasks, GATree can also perform regression tasks with a modified fitness function.
+The development of decision tree classifiers has long been a focal point in machine learning due to their interpretability and efficacy in various machine learning tasks. Traditional algorithms, however, often fall short when dealing with complex data structures or require extensive fine-tuning to avoid overfitting or underfitting. _GATree_ addresses these challenges by introducing an evolutionary approach to decision tree optimization, allowing for a more nuanced exploration of the solution space than is possible with conventional methods [@RIVERALOPEZ2022101006; karakativc2018building].
 
-The following example shows how to perform classification of the iris dataset using GATree. The iris dataset is a well-known dataset in the machine learning community, often used for testing and benchmarking classification algorithms. The dataset consists of 150 samples of iris flowers, each with four features: sepal length, sepal width, petal length, and petal width. The samples belong to one of the three classes: setosa, versicolor, and virginica. The goal is to classify the samples into the correct class based on the four features.
+This evolutionary strategy ensures that _GATree_ can adaptively fine-tune decision trees, exploring a broader range of potential solutions and dynamically adjusting to achieve optimal performance. Such flexibility is precious in fields where classification tasks are complex, and data can exhibit varied and unpredictable patterns. Furthermore, _GATree_'s ability to customize fitness functions allows for incorporating domain-specific knowledge into the evolutionary process, enhancing the relevance and quality of the resulting decision trees.
+
+Even though there are existing Python libraries that use various meta-heuristic approaches to from machine learning tree models (i.e., _gplearn_ [@gplearn], tinyGP [@Sipper2019tinyGP] and _TensorGP_ [@baeta2021tensorgp]), they use symbolic regression and not decision trees. In the broader context of machine learning and data mining, _GATree_ represents a significant advancement, offering a novel solution to the limitations of existing libraries. By integrating the principles of genetic algorithms with decision tree construction, _GATree_ not only enhances the adaptability and performance of these classifiers but also provides a rich platform for further research and development in evolutionary computing and its applications in machine learning.
+
+_GATree_, a Python library with a modular and extensible architecture, comprises of two classes: _GATree_ and _Node_. The _GATree_ class is responsible for the genetic algorithm by utilizing operator classes, such as _Selection_, _Crossover_, and _Mutation_. The _Node_ class handles the decision tree structure and its operations. The library is user-friendly and highly customizable - users can easily define custom fitness functions and other parameters to meet their needs. It is implemented to be compatible with the de-facto standard _scikit-learn_ machine learning library; thus, the main methods of use (i.e., _fit()_ and _predict()_) are present in _GATree_. The following example shows how to perform classification of the _iris_ dataset using the _GATree_ library.
 
 ```python
 from sklearn.datasets import load_iris
@@ -58,17 +70,17 @@ y_pred = gatree.predict(X_test)
 print(accuracy_score(y_test, y_pred))
 ```
 
-In this example, we load the iris dataset and split it into training and testing sets. Next, we create an instance of the GATree classifier and define its parameters, such as the number of jobs to run in parallel and the random state for reproducibility. We then fit the classifier to the training data using a population size of 100 and a maximum of 100 iterations. Finally, we make predictions on the testing set and evaluate the accuracy of the classifier. The GATree classifier uses a genetic algorithm to evolve and optimise the decision tree structure for the classification task. This configuration achieves an accuracy of 96.67% on the testing set, demonstrating the effectiveness of GATree for classification tasks.
+In this example, we load the iris dataset and split it into training and testing sets. Next, we create an instance of the _GATree_ classifier and define its parameters, such as the number of jobs to run in parallel and the random state for reproducibility. We then fit the classifier to the training data using a population size of 100 and a maximum of 100 iterations. Finally, we make predictions on the testing set and evaluate the accuracy of the classifier. The _GATree_ classifier uses a genetic algorithm to evolve and optimise the decision tree structure for the classification task. This configuration achieves an accuracy of 96.67% on the testing set, demonstrating the effectiveness of GATree for classification tasks.
 
-\autoref{fig:fitness_plot} provides a comprehensive visualisation of the genetic algorithm's progress on the iris dataset. The line graph on the left showcases the average fitness value across iterations, offering insight into the algorithm's overall performance over time. On the right half, a similar line graph displays the best fitness value at each iteration, providing a more detailed view of the algorithm's progress.
+\autoref{fig:fitness_plot} provides a comprehensive visualisation of the genetic algorithm's progress on the _iris_ dataset. The line graph on the left showcases the average fitness value across iterations, offering insight into the algorithm's overall performance over time. On the right half, a similar line graph displays the best fitness value at each iteration, providing a more detailed view of the algorithm's progress.
 
 ![Average fitness value and best fitness value at each iteration of the genetic algorithm for the iris dataset.\label{fig:fitness_plot}](./images/fitness_value.png){ width=80% }
 
-\autoref{fig:decision_tree} shows the final decision tree obtained by the GATree classifier after fitting it to the iris dataset.
+\autoref{fig:decision_tree} shows the final decision tree obtained by the _GATree_ classifier after fitting it to the _iris_ dataset.
 
 ![Final decision tree obtained by the GATree classifier.\label{fig:decision_tree}](./images/decision_tree.png){ width=60% }
 
-The fitness function can be customised to suit the specific requirements of the classification task. For example, we can define a custom fitness function that takes into account the size of the decision tree, penalising larger trees to encourage simplicity and interpretability. The following example demonstrates how to define and use a custom fitness function with the GATree classifier.
+The fitness function can be customised to suit the specific requirements of the classification task. For example, we can define a custom fitness function that takes into account the size of the decision tree, penalising larger trees to encourage simplicity and interpretability. The following example demonstrates how to define and use a custom fitness function with the _GATree_ classifier.
 
 ```python
 import pandas as pd
