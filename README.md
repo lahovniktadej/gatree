@@ -18,7 +18,7 @@ The library's core objective is to empower users in creating and fine-tuning dec
 
 ## Installation 📦
 ### pip
-To install GATree using pip, run the following command:
+To install `GATree` using pip, run the following command:
 ```bash
 pip install gatree
 ```
@@ -52,6 +52,16 @@ y_pred = gatree.predict(X_test)
 # Evaluate the accuracy of the classifier
 print(accuracy_score(y_test, y_pred))
 ```
+
+## Community Guidelines 🫂
+### Contributing
+To contribure to the software, please read the [contributing guidelines](./CONTRIBUTING.md).
+
+### Reporting Issues
+If you encounter any issues with the library, please report them using the [issue tracker](https://github.com/lahovniktadej/gatree/issues). Include a detailed description of the problem, including the steps to reproduce the problem, the stack trace, and details about your operating system and software version.
+
+### Seeking Support
+If you need support, please first refer to the [documentation](http://gatree.readthedocs.io). If you still require assistance, please open an issue on the [issue tracker](https://github.com/lahovniktadej/gatree/issues) with the `question` tag. For private inquiries, you can contact us via e-mail at [tadej.lahovnik1@um.si](mailto:tadej.lahovnik1@um.si) or [saso.karakatic@um.si](mailto:saso.karakatic@um.si).
 
 ## License
 This package is distributed under the MIT License. This license can be found online at <http://www.opensource.org/licenses/MIT>.
