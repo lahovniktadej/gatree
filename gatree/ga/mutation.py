@@ -3,12 +3,28 @@ from gatree.tree.node import Node
 
 class Mutation:
     """
-    Mutation operations for tree nodes.
+    Mutation operations for genetic algorithm. The mutation operation is used to modify a tree by changing the structure of the tree. The mutation operation is performed by selecting a random node in the tree and applying a mutation operation to that node. The mutation operation can be one of the following:
+
+    - Change the class of a leaf node.
+    - Exchange a leaf node for a new subtree.
+    - Exchange an operator node for a new subtree.
+    - Change the attribute of an operator node.
+    - Change the attribute value of an operator node.
+    - Exchange an operator node for a class.
+    - Exchange an operator node for a new subtree.
     """
     @staticmethod
     def mutation(root, att_indexes, att_values, class_count, random):
         """
-        Apply mutation on a tree node.
+        Apply mutation on a tree node. The mutation operation is performed by selecting a random node in the tree and applying a mutation operation to that node. The mutation operation can be one of the following:
+
+        - Change the class of a leaf node.
+        - Exchange a leaf node for a new subtree.
+        - Exchange an operator node for a new subtree.
+        - Change the attribute of an operator node.
+        - Change the attribute value of an operator node.
+        - Exchange an operator node for a class.
+        - Exchange an operator node for a new subtree.
 
         Args:
             root (Node): The root node of the tree.
@@ -50,7 +66,10 @@ class Mutation:
     @staticmethod
     def mutate_leaf(node, att_indexes, att_values, class_count, random):
         """
-        Mutate a leaf node.
+        Mutate a leaf node. The mutation operation can be one of the following:
+
+        - Change the class of a leaf node.
+        - Exchange a leaf node for a new subtree.
 
         Args:
             node (Node): The leaf node.
@@ -68,7 +87,7 @@ class Mutation:
     @staticmethod
     def change_class(node, class_count, random):
         """
-        Change class of a leaf node.
+        Change class of a leaf node. The new class must be different from the old class.
 
         Args:
             node (Node): The leaf node.
@@ -86,7 +105,7 @@ class Mutation:
     @staticmethod
     def exchange_class_for_tree(node, att_indexes, att_values, class_count, random):
         """
-        Exchange a leaf node for a new subtree.
+        Exchange a leaf node for a new subtree. The new subtree is created with a random depth.
 
         Args:
             node (Node): The leaf node.
@@ -113,7 +132,12 @@ class Mutation:
     @staticmethod
     def mutate_operator(node, att_indexes, att_values, class_count, random):
         """
-        Mutate a mid-tree node.
+        Mutate a mid-tree node. The mutation operation can be one of the following:
+
+        - Change the attribute of an operator node.
+        - Change the attribute value of an operator node.
+        - Exchange an operator node for a class.
+        - Exchange an operator node for a new subtree.
 
         Args:
             node (Node): The mid-tree node.
@@ -136,7 +160,7 @@ class Mutation:
     @staticmethod
     def change_attribute(node, att_indexes, att_values, random):
         """
-        Change attribute of a mid-tree node.
+        Change attribute of a mid-tree node. The new attribute must be different from the old attribute.
 
         Args:
             node (Node): The mid-tree node.
@@ -160,7 +184,7 @@ class Mutation:
     @staticmethod
     def change_attribute_value(node, att_values, random):
         """
-        Change attribute value of a mid-tree node.
+        Change attribute value of a mid-tree node. The new attribute value must be different from the old attribute value.
 
         Args:
             node (Node): The mid-tree node.
@@ -180,7 +204,7 @@ class Mutation:
     @staticmethod
     def exchange_tree_for_class(node, class_count, random):
         """
-        Exchange a mid-tree node for a class.
+        Exchange a mid-tree node for a class. The new class is selected randomly.
 
         Args:
             node (Node): The mid-tree node.
@@ -203,7 +227,7 @@ class Mutation:
     @staticmethod
     def exchange_tree_for_tree(node, att_indexes, att_values, class_count, random):
         """
-        Exchange a mid-tree node for a new subtree.
+        Exchange a mid-tree node for a new subtree. The new subtree is created with a random depth.
 
         Args:
             node (Node): The mid-tree node.

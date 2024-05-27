@@ -1,6 +1,6 @@
 class Selection:
     """
-    Selection of trees for crossover and mutation
+    Selection of trees for crossover and mutation. The selection operation is used to select two trees from the population for crossover or mutation. The selection operation is based on the tournament selection method, where a random subset of trees is selected and the best tree is chosen for crossover or mutation.
 
     Args:
         population (list): List of trees.
@@ -9,7 +9,7 @@ class Selection:
     """
     def selection(population, selection_tournament_size, random):
         """
-        Select two trees for crossover or mutation.
+        Select two trees for crossover or mutation. The selection operation is based on the tournament selection method, where a random subset of trees is selected and the best tree is chosen for crossover or mutation.
 
         Args:
             population (list): List of trees.

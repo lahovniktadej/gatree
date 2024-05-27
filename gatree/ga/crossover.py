@@ -3,11 +3,11 @@ from gatree.tree.node import Node
 
 class Crossover:
     """
-    Crossover operations for genetic algorithm.
+    Crossover operations for genetic algorithm. The crossover operation is used to combine two trees to create a new tree. The crossover operation is performed by selecting a random node from each tree and swapping the subtrees rooted at those nodes. The new tree is then returned as the result of the crossover operation.
     """
     def crossover(tree1, tree2, random):
         """
-        Perform crossover between two trees.
+        Perform crossover between two trees. The crossover operation is performed by selecting a random node from each tree and swapping the subtrees rooted at those nodes. The new tree is then returned as the result of the crossover operation.
 
         Args:
             tree1 (Node): The first tree for crossover.
