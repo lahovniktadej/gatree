@@ -48,6 +48,7 @@ Even though there are existing Python libraries that use various meta-heuristic 
 _GATree_, a Python library with a modular and extensible architecture, comprised of two classes: _GATree_ and _Node_. The _GATree_ class is responsible for the genetic algorithm by utilising operator classes, such as _Selection_ (with optional elitism), _Crossover_, and _Mutation_. The _Node_ class handles the decision tree structure and its operations. The library is user-friendly and highly customisable - users can easily define custom fitness functions and other parameters to meet their needs. It is implemented to be compatible with the de-facto standard _scikit-learn_ machine learning library; thus, the main methods of use (i.e., _fit()_ and _predict()_) are present in _GATree_. The following example shows how to perform classification of the _iris_ dataset using the _GATree_ library.
 
 ```python
+import pandas as pd
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -57,13 +58,12 @@ from gatree import GATree
 iris = load_iris()
 X = pd.DataFrame(iris.data, columns=iris.feature_names)
 y = pd.Series(iris.target, name='target')
-
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=10)
 
 # Create and fit the GATree classifier
-gatree = GATree(n_jobs=16, random_state=10)
+gatree = GATree(n_jobs=16, random_state=32)
 gatree.fit(X=X_train, y=y_train, population_size=100, max_iter=100)
 
 # Make predictions on the testing set
@@ -73,15 +73,15 @@ y_pred = gatree.predict(X_test)
 print(accuracy_score(y_test, y_pred))
 ```
 
-In this example, we load the iris dataset and split it into training and testing sets. Next, we create an instance of the _GATree_ classifier and define its parameters, such as the number of jobs to run in parallel and the random state for reproducibility. We then fit the classifier to the training data using a population size of 100 and a maximum of 100 iterations. Finally, we make predictions on the testing set and evaluate the accuracy of the classifier. The _GATree_ classifier uses a genetic algorithm to evolve and optimise the decision tree structure for the classification task. This configuration achieves an accuracy of 96.67% on the testing set, demonstrating the effectiveness of GATree for classification tasks.
+In this example, we load the iris dataset and split it into training and testing sets. Next, we create an instance of the _GATree_ classifier and define its parameters, such as the number of jobs to run in parallel and the random state for reproducibility. We then fit the classifier to the training data using a population size of 100 and a maximum of 100 iterations. Finally, we make predictions on the testing set and evaluate the accuracy of the classifier. The _GATree_ classifier uses a genetic algorithm to evolve and optimise the decision tree structure for the classification task. This configuration achieves an accuracy of 100% on the testing set, demonstrating the effectiveness of GATree for classification tasks.
 
-![Average fitness value and best fitness value at each iteration of the genetic algorithm for the iris dataset.\label{fig:fitness_plot}](./images/fitness_value.png){ width=85% }
+![Average fitness value and best fitness value at each iteration of the genetic algorithm for the iris dataset.\label{fig:fitness_plot}](./images/fitness_value.png){ width=89% }
 
-\autoref{fig:fitness_plot} provides a comprehensive visualisation of the genetic algorithm's progress on the _iris_ dataset. The line graph on the left showcases the average fitness value of each decision tree in the population across iterations, offering insight into the algorithm's overall performance over time. We can observe the most significant improvement in the average fitness value in the first 20 iterations. We can see a slight decline in average fitness values until the 40th iteration, indicating getting stuck in the local optimum while building the decision trees. After the 40. most of the decision trees in the population evolved out of the local optimum into better decision trees, which then stagnated. The slight variations in the final iterations indicate that the population is still changing due to crossover and mutations. However, the average quality of the decision trees in the population stays roughly the same. On the right half, a similar line graph displays the best fitness value at each iteration, providing a more detailed view of the algorithm's progress. The graph shows that the best fitness value improves rapidly in the first 20 iterations and then stagnates until the final iteration. The best decision tree is unaffected by evolving local optimums around the 40. iteration as the average decision tree does but remains near the global optimum, mainly due to the elitism operator.
+\autoref{fig:fitness_plot} provides a comprehensive visualisation of the genetic algorithm's progress on the _iris_ dataset. The line graph on the left showcases the average fitness value of each decision tree in the population across iterations, offering insight into the algorithm's overall performance over time. We can observe the most significant improvement in the average fitness value in the first 50 iterations. We can see a slight decline in average fitness values after the 50th iteration, indicating getting stuck in the local optimum while building the decision trees. The slight variations in the final iterations indicate that the population is still changing due to crossover and mutation. However, the average quality of the decision trees in the population stays roughly the same. On the right half, a similar line graph displays the best fitness value at each iteration, providing a more detailed view of the algorithm's progress. The graph shows that the best fitness value improves rapidly in the first 30 iterations. The best decision tree is unaffected by evolving local optimums around the 70th iteration as the average decision tree does but remains near the global optimum, mainly due to the elitism operator.
 
 \autoref{fig:decision_tree} shows the final decision tree obtained by the _GATree_ classifier after fitting it to the _iris_ dataset.
 
-![Final decision tree obtained by the GATree classifier.\label{fig:decision_tree}](./images/decision_tree.png){ width=75% }
+![Final decision tree obtained by the GATree classifier.\label{fig:decision_tree}](./images/decision_tree.png){ width=70% }
 
 The fitness function can be customised to suit the specific requirements of the classification task. For example, we can define a custom fitness function that considers the decision tree's size, penalising larger trees to encourage simplicity and interpretability. The following example demonstrates defining and using a custom fitness function with the _GATree_ classifier.
 
