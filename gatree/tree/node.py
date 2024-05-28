@@ -15,6 +15,7 @@ class Node:
         fitness (None): Placeholder for fitness value.
         y_true (list): List of true class values for evaluation.
         y_pred (list): List of predicted class values for evaluation.
+        prediction_ratio (dict): Dictionary of prediction ratios for each class in the node.
     """
 
     def __init__(self, att_index=None, att_value=None):
@@ -38,6 +39,7 @@ class Node:
             self.fitness = None
             self.y_true = []
             self.y_pred = []
+            self.prediction_ratio = {}
 
     @staticmethod
     def copy(node, parent=None):
@@ -60,6 +62,7 @@ class Node:
         copy.fitness = node.fitness
         copy.y_true = node.y_true
         copy.y_pred = node.y_pred
+        copy.prediction_ratio = node.prediction_ratio
         return copy
 
     def set_left(self, n):
@@ -227,6 +230,7 @@ class Node:
         """
         self.y_true = []
         self.y_pred = []
+        self.prediction_ratio = {}
         if self.left:
             self.left.clear_evaluation()
         if self.right:
@@ -277,6 +281,21 @@ class Node:
         except Exception as e:
             print(e)
             return -1
+
+    def calculate_prediction_ratio(self, ratio_scope):
+        """
+        Calculates the prediction ratio for this node. The prediction ratio is the ratio of the predicted class values to the total number of instances in the node. The prediction ratio is stored in the prediction_ratio attribute.
+        """
+        if ratio_scope == 'local':
+            if len(self.y_pred) > 0:
+                for key in set(self.y_pred):
+                    self.prediction_ratio[key] = self.y_pred.count(
+                        key) / len(self.y_pred)
+
+        if self.left:
+            self.left.calculate_prediction_ratio()
+        if self.right:
+            self.right.calculate_prediction_ratio()
 
     def __str__(self):
         """
