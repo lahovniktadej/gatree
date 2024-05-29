@@ -1,6 +1,6 @@
 class Node:
     """
-    Node class for decision trees.
+    Node class for decision trees. Each node represents a decision in the tree. The node can be a mid-tree node or a leaf node. Mid-tree nodes have an attribute index and an attribute value, while leaf nodes have a class index. The node can have a parent, left child, and right child. The node also has a fitness value, true class values, and predicted class values for evaluation.
 
     Args:
         att_index (int, optional): Attribute index or -1 if this is a leaf.
@@ -19,7 +19,7 @@ class Node:
 
     def __init__(self, att_index=None, att_value=None):
         """
-        Initializes the node with the given parameters.
+        Initializes the node with the given parameters. If the attribute index is -1, then this is a leaf node.
 
         Args:
             att_index (int, optional): Attribute index or -1 if this is a leaf.
@@ -42,7 +42,7 @@ class Node:
     @staticmethod
     def copy(node, parent=None):
         """
-        Returns a deep copy of the given node.
+        Returns a deep copy of the given node. The parent node can be specified for the copied node.
 
         Args:
             node (Node): Node to be copied.
@@ -64,7 +64,7 @@ class Node:
 
     def set_left(self, n):
         """
-        Sets the left child of this node to the given node.
+        Sets the left child of this node to the given node. Also sets the parent of the given node to this node.
 
         Args:
             n (Node): Node to be set as the left child.
@@ -74,7 +74,7 @@ class Node:
 
     def set_right(self, n):
         """
-        Sets the right child of this node to the given node.
+        Sets the right child of this node to the given node. Also sets the parent of the given node to this node.
 
         Args:
             n (Node): Node to be set as the right child.
@@ -126,7 +126,7 @@ class Node:
 
     def max_depth(self):
         """
-        Returns the maximum depth of the tree.
+        Returns the maximum depth of the tree. The depth of the tree is the number of edges on the longest path from the root to a leaf.
 
         Returns:
             int: Maximum depth of the tree.
@@ -176,7 +176,7 @@ class Node:
 
     def make_node(self, depth=0, max_depth=None, random=None, att_indexes=None, att_values=None, class_count=None):
         """
-        Randomly generates the node and its children.
+        Randomly generates the node and its children. The depth of the tree and the maximum depth of the tree can be specified. The random number generator, attribute indexes, attribute values, and number of classes must be provided.
 
         Args:
             depth (int, optional): Current depth of the tree.
@@ -223,7 +223,7 @@ class Node:
 
     def clear_evaluation(self):
         """
-        Clears the evaluation of this node and all its children.
+        Clears the evaluation of this node and all its children. The true class values and predicted class values are reset to empty lists.
         """
         self.y_true = []
         self.y_pred = []
@@ -234,7 +234,7 @@ class Node:
 
     def is_evaluated(self):
         """
-        Returns true if this node and all its children are evaluated.
+        Returns true if this node and all its children are evaluated. A node is evaluated if it has true class values and predicted class values.
 
         Returns:
             bool: True if this node and all its children are evaluated.
@@ -249,7 +249,7 @@ class Node:
 
     def predict_one(self, X, y=None):
         """
-        Predicts the class of the given instance.
+        Predicts the class of the given instance. If the actual class is provided, the true class value and predicted class value are stored for evaluation.
 
         Args:
             X (list): Instance to be predicted.

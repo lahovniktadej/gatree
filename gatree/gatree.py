@@ -11,7 +11,7 @@ from gatree.ga.mutation import Mutation
 
 class GATree():
     """
-    Evolutionary decision tree classifier.
+    Evolutionary decision tree classifier. The GATree classifier is a decision tree classifier that is trained using a genetic algorithm. The genetic algorithm is used to evolve a population of trees over multiple generations. The fitness of each tree is evaluated using a fitness function, which is used to select the best trees for crossover and mutation.
 
     Args:
         max_depth (int, optional): Maximum depth of the tree.
@@ -38,7 +38,7 @@ class GATree():
 
     def __init__(self, max_depth=None, random=None, fitness_function=None, n_jobs=1, random_state=None):
         """
-        Initialize the Genetic Algorithm Tree Classifier.
+        Initialise the Genetic Algorithm Tree Classifier. Maximum depth, random number generator, fitness function, number of jobs, and random state can be specified.
 
         Args:
             max_depth (int, optional): Maximum depth of the tree.
@@ -72,7 +72,7 @@ class GATree():
     @staticmethod
     def _predict_and_evaluate(tree, X, y, fitness_function):
         """
-        Evaluate a tree on a training set (in parallel)
+        Evaluate a tree on a training set (in parallel).
 
         Args:
             tree (Node): Tree to evaluate.
@@ -91,7 +91,7 @@ class GATree():
 
     def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1, selection_tournament_size=2):
         """
-        Fit a tree to a training set.
+        Fit a tree to a training set. The population size, maximum iterations, mutation probability, elite size, and selection tournament size can be specified.
 
         Args:
             X (pandas.DataFrame): Training data.
