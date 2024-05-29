@@ -1,6 +1,6 @@
 class Selection:
     """
-    Selection of trees for crossover and mutation. The selection operation is used to select two trees from the population for crossover or mutation. The selection operation is based on the tournament selection method, where a random subset of trees is selected and the best tree is chosen for crossover or mutation.
+    Class implementing the selection operator for the genetic algorithm.
 
     Args:
         population (list): List of trees.
@@ -9,7 +9,15 @@ class Selection:
     """
     def selection(population, selection_tournament_size, random):
         """
-        Select two trees for crossover or mutation. The selection operation is based on the tournament selection method, where a random subset of trees is selected and the best tree is chosen for crossover or mutation.
+        Selection is the process of choosing parent trees from the current population to produce offspring for the next generation. By default, `GATree` class uses tournament selection, a method where a subset of the population is randomly chosen, and the best individual from this subset is selected.
+
+        Pseudocode of the implementation:
+
+        1. Randomly select `selection_tournament_size` trees from the population.
+        2. Evaluate the fitness of the selected trees.
+        3. Choose the tree with the best fitness from the selected subset.
+        4. Repeat the process to select another parent.
+        5. Ensure the selected parents are different to maintain genetic diversity.
 
         Args:
             population (list): List of trees.

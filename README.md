@@ -1,30 +1,53 @@
-# GATree
-[![PyPI version](https://img.shields.io/pypi/v/gatree.svg)](https://img.shields.io/pypi/v/gatree.svg)
-[![GATree](https://github.com/lahovniktadej/gatree/actions/workflows/test.yml/badge.svg)](https://github.com/lahovniktadej/gatree/actions/workflows/test.yml)
-[![Documentation status](https://readthedocs.org/projects/gatree/badge/?version=latest)](https://gatree.readthedocs.io/en/latest/?badge=latest)
-![Open issues](https://isitmaintained.com/badge/open/lahovniktadej/gatree.svg)
-![Repository size](https://img.shields.io/github/repo-size/lahovniktadej/gatree)
-![License](https://img.shields.io/github/license/lahovniktadej/gatree.svg)
+<h1 align="center">
+    GATree
+</h1>
 
-* **Free software:** MIT license
-* **Documentation**: [http://gatree.readthedocs.io](http://gatree.readthedocs.io)
-* **Python**: 3.9.x, 3.10.x
-* **Dependencies**: listed in [CONTRIBUTING.md](./CONTRIBUTING.md#dependencies)
-* **Operating systems**: Windows, Ubuntu, macOS
+<p align="center">
+    <img alt="PyPI version" src="https://img.shields.io/pypi/v/gatree.svg" />
+    <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/gatree.svg">
+    <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/niaaml.svg" href="https://pepy.tech/project/gatree">
+    <img alt="Downloads" src="https://pepy.tech/badge/gatree">
+    <img alt="GATree" src="https://github.com/lahovniktadej/gatree/actions/workflows/test.yml/badge.svg" />
+    <img alt="Documentation status" src="https://readthedocs.org/projects/gatree/badge/?version=latest" />
+</p>
 
-## About 📋
+<p align ="center">
+    <img alt="Repository size" src="https://img.shields.io/github/repo-size/lahovniktadej/gatree" />
+    <img alt="License" src="https://img.shields.io/github/license/lahovniktadej/gatree.svg" />
+    <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/w/lahovniktadej/gatree.svg">
+    <img alt="Percentage of issues still open" src="http://isitmaintained.com/badge/open/lukapecnik/niaaml.svg" href="http://isitmaintained.com/project/lahovniktadej/gatree">
+    <img alt="Average time to resolve an issue" src="http://isitmaintained.com/badge/resolution/lukapecnik/niaaml.svg" href="http://isitmaintained.com/project/lahovniktadej/gatree">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/lahovniktadej/gatree.svg"/>
+</p>
+
+<p align="center">
+    <a href="#-about">📋 About </a>  •
+    <a href="#-installation">📦 Installation</a> •
+    <a href="#-usage">🚀 Usage</a> •
+    <a href="#-genetic-operators-in-gatree">🧬 Genetic Operators</a> •
+    <a href="#-community-guidelines">🫂 Community Guidelines</a> •
+    <a href="#-license">📜 License</a>
+</p>
+
+## 📋 About
 GATree is a Python library designed for implementing evolutionary decision trees using a genetic algorithm approach. The library provides functionalities for selection, mutation, and crossover operations within the decision tree structure, allowing users to evolve and optimise decision trees for various classification tasks. 🌲🧬
 
 The library's core objective is to empower users in creating and fine-tuning decision trees through an evolutionary process, opening avenues for innovative approaches to classification problems. GATree enables the dynamic growth and adaptation of decision trees, offering a flexible and powerful tool for machine learning enthusiasts and practitioners. 🚀🌿
 
-## Installation 📦
+* **Free software:** MIT license
+* **Documentation**: [http://gatree.readthedocs.io](http://gatree.readthedocs.io)
+* **Python**: 3.9, 3.10
+* **Dependencies**: listed in [CONTRIBUTING.md](./CONTRIBUTING.md#dependencies)
+* **Operating systems**: Windows, Ubuntu, macOS
+
+## 📦 Installation
 ### pip
 To install `GATree` using pip, run the following command:
 ```bash
 pip install gatree
 ```
 
-## Usage 🚀
+## 🚀 Usage
 The following example demonstrates how to perform classification of the iris dataset using `GATree`. More examples can be found in the [examples](./examples) directory.
 
 ```python
@@ -54,7 +77,49 @@ y_pred = gatree.predict(X_test)
 print(accuracy_score(y_test, y_pred))
 ```
 
-## Community Guidelines 🫂
+## 🧬 Genetic Operators in `GATree`
+The genetic algorithm for decision trees in `GATree` involves several key operators: _selection_, _elitism_, _crossover_, and _mutation_. Each of these operators plays a crucial role in the evolution and optimization of the decision trees. Below is a detailed description of each operator within the context of the `GATree` class.
+
+### Selection
+**Selection** is the process of choosing parent trees from the current population to produce offspring for the next generation. By default, `GATree` class uses tournament selection, a method where a subset of the population is randomly chosen, and the best individual from this subset is selected.
+
+Pseudocode from function `Selection.selection`:
+  1. Randomly select `selection_tournament_size` trees from the population.
+  2. Evaluate the fitness of the selected trees.
+  3. Choose the tree with the best fitness from the selected subset.
+  4. Repeat the process to select another parent.
+  5. Ensure the selected parents are different to maintain genetic diversity.
+
+### Elitism
+**Elitism** ensures that the best-performing individuals (trees) from the current generation are carried over to the next generation without any modification. This guarantees that the quality of the population does not decrease from one generation to the next.
+
+Pseudocode from function `GATree.fit`:
+  1. Sort the population based on fitness in ascending order (since lower fitness is better).
+  2. Select the top `elite_size` trees.
+  3. Directly carry these elite trees to the next generation.
+
+### Crossover
+
+**Crossover** is a genetic operator used to combine the genetic information of two parent trees to generate new offspring. This enables exploration, which helps in creating diversity in the population and combining good traits from both parents.
+
+Pseudocode from function `Crossover.crossover`:
+  1. Copy the parent trees to avoid altering the originals.
+  2. Randomly select a crossover point in each tree.
+  3. Swap the subtrees at the selected points between the two trees.
+  4. Return the new tree created from the crossover.
+
+### Mutation
+**Mutation** introduces random changes to a tree to maintain genetic diversity and explore new solutions. This helps in avoiding local optima by introducing new genetic structures.
+
+Pseudocode from function `Mutation.mutation`:
+  1. Randomly select a node within the tree.
+  2. Depending on whether the selected node is a leaf or an internal node, apply different mutation strategies:
+     - **Leaf Mutation:** Change the class label or replace the leaf with a new subtree.
+     - **Internal Node Mutation:** Change the attribute, change the attribute value, replace the node with a class label, or replace the node with a new subtree.
+  3. Ensure the mutated node maintains the structural integrity of the tree.
+  4. Return the root of the mutated tree.
+
+## 🫂 Community Guidelines
 ### Contributing
 To contribure to the software, please read the [contributing guidelines](./CONTRIBUTING.md).
 
@@ -64,7 +129,7 @@ If you encounter any issues with the library, please report them using the [issu
 ### Seeking Support
 If you need support, please first refer to the [documentation](http://gatree.readthedocs.io). If you still require assistance, please open an issue on the [issue tracker](https://github.com/lahovniktadej/gatree/issues) with the `question` tag. For private inquiries, you can contact us via e-mail at [tadej.lahovnik1@um.si](mailto:tadej.lahovnik1@um.si) or [saso.karakatic@um.si](mailto:saso.karakatic@um.si).
 
-## License
+## 📜 License
 This package is distributed under the MIT License. This license can be found online at <http://www.opensource.org/licenses/MIT>.
 
 ## Disclaimer

@@ -3,28 +3,23 @@ from gatree.tree.node import Node
 
 class Mutation:
     """
-    Mutation operations for genetic algorithm. The mutation operation is used to modify a tree by changing the structure of the tree. The mutation operation is performed by selecting a random node in the tree and applying a mutation operation to that node. The mutation operation can be one of the following:
-
-    - Change the class of a leaf node.
-    - Exchange a leaf node for a new subtree.
-    - Exchange an operator node for a new subtree.
-    - Change the attribute of an operator node.
-    - Change the attribute value of an operator node.
-    - Exchange an operator node for a class.
-    - Exchange an operator node for a new subtree.
+    Class implementing the mutation operator for the genetic algorithm.
     """
     @staticmethod
     def mutation(root, att_indexes, att_values, class_count, random):
         """
-        Apply mutation on a tree node. The mutation operation is performed by selecting a random node in the tree and applying a mutation operation to that node. The mutation operation can be one of the following:
+        Mutation introduces random changes to a tree to maintain genetic diversity and explore new solutions. This helps in avoiding local optima by introducing new genetic structures.
 
-        - Change the class of a leaf node.
-        - Exchange a leaf node for a new subtree.
-        - Exchange an operator node for a new subtree.
-        - Change the attribute of an operator node.
-        - Change the attribute value of an operator node.
-        - Exchange an operator node for a class.
-        - Exchange an operator node for a new subtree.
+        Pseudocode of the implementation:
+
+        1. Randomly select a node within the tree.
+        2. Depending on whether the selected node is a leaf or an internal node, apply different mutation strategies:
+
+            - **Leaf Mutation:** Change the class label or replace the leaf with a new subtree.
+            - **Internal Node Mutation:** Change the attribute, change the attribute value, replace the node with a class label, or replace the node with a new subtree.
+
+        3. Ensure the mutated node maintains the structural integrity of the tree.
+        4. Return the root of the mutated tree.
 
         Args:
             root (Node): The root node of the tree.

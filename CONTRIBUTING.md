@@ -96,7 +96,7 @@ List of `GATree`'s development dependencies:
 | Package          | Version | Platform |
 |------------------|---------|:--------:|
 | pytest           | ^7.4.3  | All      |
-| sphinx           | ^4.4.0  | All      |
+| sphinx           | ^5.0    | All      |
 | sphinx-rtd-theme | ^1.0.0  | All      |
 
 ### Documentation
