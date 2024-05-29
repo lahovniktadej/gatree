@@ -78,7 +78,7 @@ print(accuracy_score(y_test, y_pred))
 ```
 
 ## 🧬 Genetic Operators in `GATree`
-The genetic algorithm for decision trees in `GATree` involves several key operators: _selection_, _elitism_, _crossover_, and _mutation_. Each of these operators plays a crucial role in the evolution and optimization of the decision trees. Below is a detailed description of each operator within the context of the `GATree` class.
+The genetic algorithm for decision trees in `GATree` involves several key operators: _selection_, _elitism_, _crossover_, and _mutation_. Each of these operators plays a crucial role in the evolution and optimisation of the decision trees. Below is a detailed description of each operator within the context of the `GATree` class.
 
 ### Selection
 **Selection** is the process of choosing parent trees from the current population to produce offspring for the next generation. By default, `GATree` class uses tournament selection, a method where a subset of the population is randomly chosen, and the best individual from this subset is selected.
