@@ -79,6 +79,26 @@ Next, install the development dependencies using [Poetry](https://python-poetry.
 poetry install
 ```
 
+All of the project's dependencies should be installed and the project should be ready for further development.
+
+#### Dependencies
+List of `GATree`'s dependencies:
+
+| Package       | Version | Platform |
+|---------------|---------|:--------:|
+| scikit-learn  | ^1.3.0  | All      |
+| scipy         | ^1.11.2 | All      |
+| numpy         | ^1.26.0 | All      |
+| pandas        | ^2.1.1  | All      |
+
+List of `GATree`'s development dependencies:
+
+| Package          | Version | Platform |
+|------------------|---------|:--------:|
+| pytest           | ^7.4.3  | All      |
+| sphinx           | ^4.4.0  | All      |
+| sphinx-rtd-theme | ^1.0.0  | All      |
+
 ### Documentation
 The latest documentation is available at [https://gatree.readthedocs.io](https://gatree.readthedocs.io).
 

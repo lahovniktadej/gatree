@@ -9,6 +9,7 @@
 * **Free software:** MIT license
 * **Documentation**: [http://gatree.readthedocs.io](http://gatree.readthedocs.io)
 * **Python**: 3.9.x, 3.10.x
+* **Dependencies**: listed in [CONTRIBUTING.md](./CONTRIBUTING.md#dependencies)
 * **Operating systems**: Windows, Ubuntu, macOS
 
 ## About 📋
