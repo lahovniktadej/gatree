@@ -70,7 +70,7 @@ class GATree():
         return 1 - accuracy_score(root.y_true, root.y_pred) + (0.002 * root.size())
 
     @staticmethod
-    def _predict_and_evaluate(tree, X, y, fitness_function, ratio_scope):
+    def _predict_and_evaluate(tree, X, y, fitness_function, ratio_scope, classes):
         """
         Evaluate a tree on a training set (in parallel).
 
@@ -79,6 +79,8 @@ class GATree():
             X (pandas.DataFrame): Training data.
             y (pandas.Series): Target values.
             fitness_function (function): Fitness function for the genetic algorithm.
+            ratio_scope (str): Scope of prediction ratio.
+            classes (list): List of classes.
 
         Returns:
             Node: The evaluated tree.
@@ -86,10 +88,8 @@ class GATree():
         for j in range(X.shape[0]):
             # Predict class for current instance
             tree.predict_one(X.iloc[j], y.iloc[j])
-        tree.calculate_prediction_ratio(ratio_scope=ratio_scope)
-        for j in range(X.shape[0]):
-            # Predict class for current instance
-            tree.predict_one(X.iloc[j], y.iloc[j])
+        tree.calculate_prediction_ratio(ratio_scope, classes)
+        tree.normalise_prediction_ratio(ratio_scope)
         tree.fitness = fitness_function(tree)
         return tree
 
@@ -132,7 +132,7 @@ class GATree():
 
             # Evaluation of population
             population = Parallel(n_jobs=self.n_jobs)(delayed(GATree._predict_and_evaluate)(
-                tree, X, y, self.fitness_function, ratio_scope) for tree in population)
+                tree, X, y, self.fitness_function, ratio_scope, self.att_values[-1]) for tree in population)
 
             # Sort population by fitness
             population.sort(key=lambda x: x.fitness, reverse=False)
@@ -209,12 +209,14 @@ class GATree():
             node = self._tree
 
         if node is not None:
+            ratios = [
+                {key: f'{node.predictions[key]} ({round(node.prediction_ratio[key], 5)})' for key in node.predictions}]
             if node.att_index != -1:
-                print(prefix + '├── {} > {}'.format(self.X.columns.tolist()
-                      [node.att_index], node.att_value))
+                print(prefix + '├── {} > {} ({})'.format(self.X.columns.tolist()
+                      [node.att_index], node.att_value, f'{len(node.y_pred)} {ratios}'))
             else:
                 print(
-                    prefix + '└── Class: {}'.format(self.att_values[-1][node.att_value]))
+                    prefix + '└── Class: {} ({})'.format(self.att_values[-1][node.att_value], f'{len(node.y_pred)} {ratios}'))
 
             if node.left is not None or node.right is not None:
                 self.plot(node.left, prefix + '    ')

@@ -40,6 +40,7 @@ class Node:
             self.y_true = []
             self.y_pred = []
             self.prediction_ratio = {}
+            self.predictions = {}
 
     @staticmethod
     def copy(node, parent=None):
@@ -282,20 +283,73 @@ class Node:
             print(e)
             return -1
 
-    def calculate_prediction_ratio(self, ratio_scope):
+    def calculate_prediction_ratio(self, ratio_scope, classes):
         """
         Calculates the prediction ratio for this node. The prediction ratio is the ratio of the predicted class values to the total number of instances in the node. The prediction ratio is stored in the prediction_ratio attribute.
+
+        Args:
+            ratio_scope (str): Scope of the prediction ratio. 'local' calculates the prediction ratio only for this node. 'global' calculates the prediction ratio for this node and its parent nodes.
+            classes (list): List of class indexes.
         """
+        for cls in classes:
+            self.predictions[cls] = 0
+            self.prediction_ratio[cls] = 0.0
+
+        for cls in set(self.y_pred):
+            self.predictions[cls] = self.y_pred.count(cls)
+
         if ratio_scope == 'local':
-            if len(self.y_pred) > 0:
-                for key in set(self.y_pred):
-                    self.prediction_ratio[key] = self.y_pred.count(
-                        key) / len(self.y_pred)
+            for cls in set(self.y_pred):
+                self.prediction_ratio[cls] = self.y_pred.count(
+                    cls) / len(self.y_pred)
+        if ratio_scope == 'global':
+            for cls in set(self.y_pred):
+                if not self.parent:
+                    self.prediction_ratio[cls] = self.y_pred.count(
+                        cls) / len(self.y_pred)
+                else:
+                    self.prediction_ratio[cls] = self.y_pred.count(
+                        cls) / len(self.y_pred) + self.parent.calculate_prediction_global(cls, len(self.y_pred), f'{self.y_pred.count(cls)} / {len(self.y_pred)} + ')
 
         if self.left:
-            self.left.calculate_prediction_ratio()
+            self.left.calculate_prediction_ratio(ratio_scope, classes)
         if self.right:
-            self.right.calculate_prediction_ratio()
+            self.right.calculate_prediction_ratio(ratio_scope, classes)
+
+    def calculate_prediction_global(self, cls, instances=None, formula=''):
+        """
+        Helper function for calculate_prediction_ratio. Recursively gathers the prediction ratio of the parent nodes.
+
+        Args:
+            cls (int): Class index.
+            instances (int): Number of instances in the child node.
+        """
+        if self.parent:
+            formula += f'{self.y_pred.count(cls)} / {len(self.y_pred)} * {instances} / {len(self.y_pred)} + '
+            return self.y_pred.count(cls) / len(self.y_pred) * instances / len(self.y_pred) + self.parent.calculate_prediction_global(cls, instances, formula)
+        formula += f'{instances} / {len(self.y_pred)} * {self.y_pred.count(cls)} / {len(self.y_pred)}'
+        return instances / len(self.y_pred) * (self.y_pred.count(cls) / len(self.y_pred))
+
+    def normalise_prediction_ratio(self, ratio_scope):
+        """
+        Normalises the prediction ratio for this node. The prediction ratio is normalised to the range [0, 1]. The normalised prediction ratio is stored in the prediction_ratio attribute.
+
+        Args:
+            ratio_scope (str): Scope of the prediction ratio. 'local' calculates the prediction ratio only for this node. 'global' calculates the prediction ratio for this node and its parent nodes.
+        """
+        if ratio_scope == 'local':
+            return
+
+        sum_prediction_ratio = sum([self.prediction_ratio[cls]
+                                   for cls in self.prediction_ratio if self.prediction_ratio[cls] != 0])
+        for cls in self.prediction_ratio:
+            if self.prediction_ratio[cls] != 0:
+                self.prediction_ratio[cls] /= sum_prediction_ratio
+
+        if self.left:
+            self.left.normalise_prediction_ratio(ratio_scope)
+        if self.right:
+            self.right.normalise_prediction_ratio(ratio_scope)
 
     def __str__(self):
         """
