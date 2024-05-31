@@ -90,6 +90,7 @@ class GATree():
             tree.predict_one(X.iloc[j], y.iloc[j])
         tree.calculate_prediction_ratio(ratio_scope, classes)
         tree.normalise_prediction_ratio(ratio_scope)
+        tree.apply_prediction_ratio()
         tree.fitness = fitness_function(tree)
         return tree
 

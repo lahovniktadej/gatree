@@ -351,6 +351,19 @@ class Node:
         if self.right:
             self.right.normalise_prediction_ratio(ratio_scope)
 
+    def apply_prediction_ratio(self):
+        """
+        Applies the prediction ratio to the list nodes. If necessary, the `att_value` is updated based on the prediction ratio.
+        """
+        if self.att_index == -1:
+            cls = max(self.prediction_ratio, key=self.prediction_ratio.get)
+            self.att_value = cls
+
+        if self.left:
+            self.left.apply_prediction_ratio()
+        if self.right:
+            self.right.apply_prediction_ratio()
+
     def __str__(self):
         """
         Returns a string representation of this node.
