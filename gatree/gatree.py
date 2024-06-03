@@ -70,7 +70,7 @@ class GATree():
         return 1 - accuracy_score(root.y_true, root.y_pred) + (0.002 * root.size())
 
     @staticmethod
-    def _predict_and_evaluate(tree, X, y, fitness_function, ratio_scope, classes):
+    def _predict_and_evaluate(tree, X, y, fitness_function, ratio_scope, classes, algorithm):
         """
         Evaluate a tree on a training set (in parallel).
 
@@ -81,20 +81,31 @@ class GATree():
             fitness_function (function): Fitness function for the genetic algorithm.
             ratio_scope (str): Scope of prediction ratio.
             classes (list): List of classes.
+            algorithm (str): Algorithm for decision tree. Can be 'standard' or 'balanced'.
 
         Returns:
             Node: The evaluated tree.
         """
+        # Pass instances through the tree
         for j in range(X.shape[0]):
-            # Predict class for current instance
             tree.predict_one(X.iloc[j], y.iloc[j])
-        tree.calculate_prediction_ratio(ratio_scope, classes)
-        tree.normalise_prediction_ratio(ratio_scope)
-        tree.apply_prediction_ratio()
+
+        if algorithm == 'balanced':
+            # Calculate, normalise, and apply prediction ratio
+            tree.calculate_prediction_ratio(ratio_scope, classes)
+            tree.normalise_prediction_ratio(ratio_scope)
+            tree.apply_prediction_ratio()
+
+            # Pass instances through the tree to update predictions
+            for j in range(X.shape[0]):
+                tree.predict_one(X.iloc[j], y.iloc[j])
+
+        # Evaluate fitness
         tree.fitness = fitness_function(tree)
+
         return tree
 
-    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1, selection_tournament_size=2, ratio_scope='global'):
+    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1, selection_tournament_size=2, ratio_scope='global', algorithm='standard'):
         """
         Fit a tree to a training set. The population size, maximum iterations, mutation probability, elite size, selection tournament, and ratio scope size can be specified.
 
@@ -107,6 +118,7 @@ class GATree():
             elite_size (int, optional): Number of elite trees.
             selection_tournament_size (int, optional): Number of trees in tournament.
             ratio_scope (str, optional): Scope of prediction ratio. Can be 'global' or 'local'. Global prediction ratio is calculated for the whole tree, while local prediction ratio is calculated for each node.
+            algorithm (str, optional): Algorithm for decision tree. Can be 'standard' or 'balanced'.
 
         Returns:
             Node: The fitted tree.
@@ -133,7 +145,7 @@ class GATree():
 
             # Evaluation of population
             population = Parallel(n_jobs=self.n_jobs)(delayed(GATree._predict_and_evaluate)(
-                tree, X, y, self.fitness_function, ratio_scope, self.att_values[-1]) for tree in population)
+                tree, X, y, self.fitness_function, ratio_scope, self.att_values[-1], algorithm) for tree in population)
 
             # Sort population by fitness
             population.sort(key=lambda x: x.fitness, reverse=False)
