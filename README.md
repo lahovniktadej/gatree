@@ -36,7 +36,7 @@ The library's core objective is to empower users in creating and fine-tuning dec
 
 * **Free software:** MIT license
 * **Documentation**: [http://gatree.readthedocs.io](http://gatree.readthedocs.io)
-* **Python**: 3.9, 3.10
+* **Python**: 3.9, 3.10, 3.11, 3.12
 * **Dependencies**: listed in [CONTRIBUTING.md](./CONTRIBUTING.md#dependencies)
 * **Operating systems**: Windows, Ubuntu, macOS
 

@@ -3,7 +3,7 @@ GATree
 
 * **Free software:** MIT license
 * **GitHub**: https://github.com/lahovniktadej/gatree
-* **Python**: 3.9.x, 3.10.x
+* **Python**: 3.9, 3.10, 3.11, 3.12
 * **Operating systems**: Windows, Ubuntu, macOS
 
 About
