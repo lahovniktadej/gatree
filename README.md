@@ -30,7 +30,7 @@
 </p>
 
 ## 📋 About
-GATree is a Python library designed for implementing evolutionary decision trees using a genetic algorithm approach. The library provides functionalities for selection, mutation, and crossover operations within the decision tree structure, allowing users to evolve and optimise decision trees for various classification tasks. 🌲🧬
+GATree is a Python library designed for implementing evolutionary decision trees using a standard genetic algorithm approach. The library provides functionalities for selection, mutation, and crossover operations within the decision tree structure, allowing users to evolve and optimise decision trees for various classification tasks. 🌲🧬
 
 The library's core objective is to empower users in creating and fine-tuning decision trees through an evolutionary process, opening avenues for innovative approaches to classification problems. GATree enables the dynamic growth and adaptation of decision trees, offering a flexible and powerful tool for machine learning enthusiasts and practitioners. 🚀🌿
 
