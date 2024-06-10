@@ -13,6 +13,8 @@ GATree is a Python library designed for implementing evolutionary decision trees
 
 The library's core objective is to empower users in creating and fine-tuning decision trees through an evolutionary process, opening avenues for innovative approaches to classification problems. GATree enables the dynamic growth and adaptation of decision trees, offering a flexible and powerful tool for machine learning enthusiasts and practitioners. 🚀🌿
 
+GATree is currently limited to classification tasks, with support for regression tasks planned for future releases. 💡
+
 Documentation
 -------------
 
