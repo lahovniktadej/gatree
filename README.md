@@ -34,9 +34,11 @@ GATree is a Python library designed for implementing evolutionary decision trees
 
 The library's core objective is to empower users in creating and fine-tuning decision trees through an evolutionary process, opening avenues for innovative approaches to classification problems. GATree enables the dynamic growth and adaptation of decision trees, offering a flexible and powerful tool for machine learning enthusiasts and practitioners. 🚀🌿
 
+GATree is currently limited to classification tasks, with support for regression tasks planned for future releases. 💡
+
 * **Free software:** MIT license
 * **Documentation**: [http://gatree.readthedocs.io](http://gatree.readthedocs.io)
-* **Python**: 3.9, 3.10
+* **Python**: 3.9, 3.10, 3.11, 3.12
 * **Dependencies**: listed in [CONTRIBUTING.md](./CONTRIBUTING.md#dependencies)
 * **Operating systems**: Windows, Ubuntu, macOS
 
@@ -83,41 +85,15 @@ The genetic algorithm for decision trees in `GATree` involves several key operat
 ### Selection
 **Selection** is the process of choosing parent trees from the current population to produce offspring for the next generation. By default, `GATree` class uses tournament selection, a method where a subset of the population is randomly chosen, and the best individual from this subset is selected.
 
-Pseudocode from function `Selection.selection`:
-  1. Randomly select `selection_tournament_size` trees from the population.
-  2. Evaluate the fitness of the selected trees.
-  3. Choose the tree with the best fitness from the selected subset.
-  4. Repeat the process to select another parent.
-  5. Ensure the selected parents are different to maintain genetic diversity.
-
 ### Elitism
 **Elitism** ensures that the best-performing individuals (trees) from the current generation are carried over to the next generation without any modification. This guarantees that the quality of the population does not decrease from one generation to the next.
-
-Pseudocode from function `GATree.fit`:
-  1. Sort the population based on fitness in ascending order (since lower fitness is better).
-  2. Select the top `elite_size` trees.
-  3. Directly carry these elite trees to the next generation.
 
 ### Crossover
 
 **Crossover** is a genetic operator used to combine the genetic information of two parent trees to generate new offspring. This enables exploration, which helps in creating diversity in the population and combining good traits from both parents.
 
-Pseudocode from function `Crossover.crossover`:
-  1. Copy the parent trees to avoid altering the originals.
-  2. Randomly select a crossover point in each tree.
-  3. Swap the subtrees at the selected points between the two trees.
-  4. Return the new tree created from the crossover.
-
 ### Mutation
 **Mutation** introduces random changes to a tree to maintain genetic diversity and explore new solutions. This helps in avoiding local optima by introducing new genetic structures.
-
-Pseudocode from function `Mutation.mutation`:
-  1. Randomly select a node within the tree.
-  2. Depending on whether the selected node is a leaf or an internal node, apply different mutation strategies:
-     - **Leaf Mutation:** Change the class label or replace the leaf with a new subtree.
-     - **Internal Node Mutation:** Change the attribute, change the attribute value, replace the node with a class label, or replace the node with a new subtree.
-  3. Ensure the mutated node maintains the structural integrity of the tree.
-  4. Return the root of the mutated tree.
 
 ## 🫂 Community Guidelines
 ### Contributing

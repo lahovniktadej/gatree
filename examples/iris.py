@@ -1,6 +1,9 @@
 """
 The following example shows how to perform classification 
 of the iris dataset using GATree
+
+Before running this example, install matplotlib:
+poetry add matplotlib
 """
 
 import pandas as pd
@@ -43,6 +46,3 @@ ax2.set_ylabel('Best fitness')
 ax2.grid(True)
 plt.tight_layout()
 plt.show()
-
-# Plot the decision tree
-gatree.plot()
