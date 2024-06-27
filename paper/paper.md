@@ -44,7 +44,7 @@ The development of decision tree classifiers has long been a focal point in mach
 
 This evolutionary strategy ensures that _GATree_ can adaptively fine-tune decision trees, exploring a broader range of potential solutions and dynamically adjusting to achieve optimal performance. Such flexibility is precious in fields where classification tasks are complex, and data can exhibit varied and unpredictable patterns. Furthermore, _GATree_'s ability to customise fitness functions allows for incorporating domain-specific knowledge into the evolutionary process, enhancing the relevance and quality of the resulting decision trees.
 
-Even though there are existing Python libraries that use various meta-heuristic approaches to from machine learning tree models (i.e., _gplearn_[^3], tinyGP[^4] and _TensorGP_ [@baeta2021tensorgp]), they use symbolic regression and not decision trees. In the broader context of machine learning and data mining, _GATree_ represents a significant advancement, offering a novel solution to the limitations of existing libraries. By integrating the principles of standard genetic algorithms with decision tree construction, _GATree_ not only enhances the adaptability and performance of these classifiers but also provides a rich platform for further research and development in evolutionary computing and its applications in machine learning.
+Even though there are existing Python libraries that use various meta-heuristic approaches to form machine learning tree models (i.e., _gplearn_[^3], _tinyGP_[^4] and _TensorGP_ [@baeta2021tensorgp]), they use symbolic regression and not decision trees. In the broader context of machine learning and data mining, _GATree_ represents a significant advancement, offering a novel solution to the limitations of existing libraries. By integrating the principles of standard genetic algorithms with decision tree construction, _GATree_ not only enhances the adaptability and performance of these classifiers but also provides a rich platform for further research and development in evolutionary computing and its applications in machine learning.
 
 [^3]: \url{https://github.com/trevorstephens/gplearn}
 [^4]: \url{https://github.com/moshesipper/tiny_gp}
@@ -104,5 +104,42 @@ def fitness_function(root):
 # Create and fit the GATree classifier
 gatree = GATree(fitness_function=fitness_function, n_jobs=16, random_state=10)
 ```
+
+To test the performance of the _GATree_ classifier, we conducted a series of experiments on the _adult_ dataset. We evaluated the classifier's accuracy and F1-score across 100 runs with different parameter settings (see \autoref{tab:experiment_results}) and compared the results with other classifiers, such as _DecisionTreeClassifier_ (scikit-learn) and _SymbolicClassifier_ (gplearn). The results demonstrate that _GATree_ achieves competitive performance in terms of accuracy and F1-score. _GATree_'s performance improves with more generations and higher population sizes, indicating the importance of these parameters in the evolutionary process.
+
+:Results of the conducted experiment.\label{tab:experiment_results}
+
++------------------------+-----------------------------+-----------+-----------+
+| Classifier             | Parameters                  | Avg. max\ | Avg. max\ |
+|                        |                             | accuracy  | F1-score  |
++========================+=============================+===========+:==========+
+| GATree                 | mutation_probability=0.10\  | 0.801     | 0.615     |
+|                        | population_size=25\         |           |           |
+|                        | elite_size=1\               |           |           |
+|                        | max_iter=50\                |           |           |
++------------------------+-----------------------------+-----------+-----------+
+| GATree                 | mutation_probability=0.15\  | 0.808     | 0.637     |
+|                        | population_size=50\         |           |           |
+|                        | elite_size=2\               |           |           |
+|                        | max_iter=100\               |           |           |
++------------------------+-----------------------------+-----------+-----------+
+| GATree                 | mutation_probability=0.20\  | 0.810     | 0.642     |
+|                        | population_size=75\         |           |           |
+|                        | elite_size=3\               |           |           |
+|                        | max_iter=100\               |           |           |
++------------------------+-----------------------------+-----------+-----------+
+| GATree                 | mutation_probability=0.25\  | 0.815     | 0.656     |
+|                        | population_size=100\        |           |           |
+|                        | elite_size=5\               |           |           |
+|                        | max_iter=200\               |           |           |
++------------------------+-----------------------------+-----------+-----------+
+| DecisionTreeClassifier | criterion='gini'            | 0.806     | 0.451     |
+|                        | splitter='random'\          |           |           |
+|                        | max_depth=5\                |           |           |
++------------------------+-----------------------------+-----------+-----------+
+| SymbolicClassifier     | parsimony_coefficient=0.01\ | 0.752     | 0.031     |
+|                        | population_size=50\         |           |           |
+|                        | generations=100\            |           |           |
++------------------------+-----------------------------+-----------+-----------+
 
 # References
