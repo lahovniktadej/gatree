@@ -5,18 +5,24 @@
 <p align="center">
     <img alt="PyPI version" src="https://img.shields.io/pypi/v/gatree.svg" />
     <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/gatree.svg">
-    <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/niaaml.svg" href="https://pepy.tech/project/gatree">
+    <a href="https://pepy.tech/project/gatree">
+        <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/niaaml.svg">
+    </a>
     <img alt="Downloads" src="https://pepy.tech/badge/gatree">
     <img alt="GATree" src="https://github.com/lahovniktadej/gatree/actions/workflows/test.yml/badge.svg" />
     <img alt="Documentation status" src="https://readthedocs.org/projects/gatree/badge/?version=latest" />
 </p>
 
-<p align ="center">
+<p align="center">
     <img alt="Repository size" src="https://img.shields.io/github/repo-size/lahovniktadej/gatree" />
     <img alt="License" src="https://img.shields.io/github/license/lahovniktadej/gatree.svg" />
     <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/w/lahovniktadej/gatree.svg">
-    <img alt="Percentage of issues still open" src="http://isitmaintained.com/badge/open/lukapecnik/niaaml.svg" href="http://isitmaintained.com/project/lahovniktadej/gatree">
-    <img alt="Average time to resolve an issue" src="http://isitmaintained.com/badge/resolution/lukapecnik/niaaml.svg" href="http://isitmaintained.com/project/lahovniktadej/gatree">
+    <a href="http://isitmaintained.com/project/lahovniktadej/gatree">
+        <img alt="Percentage of issues still open" src="http://isitmaintained.com/badge/open/lahovniktadej/gatree.svg">
+    </a>
+    <a href="http://isitmaintained.com/project/lahovniktadej/gatree">
+        <img alt="Average time to resolve an issue" src="http://isitmaintained.com/badge/resolution/lahovniktadej/gatree.svg">
+    </a>
     <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/lahovniktadej/gatree.svg"/>
 </p>
 
