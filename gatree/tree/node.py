@@ -68,7 +68,7 @@ class Node:
 
     def set_left(self, n):
         """
-        Sets the left child of this node to the given node. Also sets the parent of the given node to this node.
+        Sets the left child of the current node to the given node. Also sets the parent of the given node to the current node.
 
         Args:
             n (Node): Node to be set as the left child.
@@ -78,7 +78,7 @@ class Node:
 
     def set_right(self, n):
         """
-        Sets the right child of this node to the given node. Also sets the parent of the given node to this node.
+        Sets the right child of the current node to the given node. Also sets the parent of the given node to the current node.
 
         Args:
             n (Node): Node to be set as the right child.
@@ -99,7 +99,7 @@ class Node:
 
     def get_children(self):
         """
-        Returns the children of this node.
+        Returns the children of the current node.
 
         Returns:
             tuple: Tuple containing the left and right children nodes.
@@ -108,10 +108,10 @@ class Node:
 
     def get_leaves(self):
         """
-        Returns the leaves of this node.
+        Returns the leaves of the current node.
 
         Returns:
-            list: List of leaves of this node.
+            list: List of leaves of the current node.
         """
         if self.left is None:
             return [self]
@@ -119,10 +119,10 @@ class Node:
 
     def depth(self):
         """
-        Returns the depth of this node.
+        Returns the depth of the current node.
 
         Returns:
-            int: Depth of this node.
+            int: Depth of the current node.
         """
         if self.parent is None:
             return 1
@@ -225,24 +225,28 @@ class Node:
 
         return node
 
-    def clear_evaluation(self):
+    def clear_evaluation(self, ratio=False):
         """
-        Clears the evaluation of this node and all its children. The true class values and predicted class values are reset to empty lists.
+        Clears the evaluation of the current node and all its children. The true class values and predicted class values are reset to empty lists.
+
+        Args:
+            ratio (bool, optional): If true, the prediction ratio is also reset
         """
         self.y_true = []
         self.y_pred = []
-        self.prediction_ratio = {}
+        if ratio:
+            self.prediction_ratio = {}
         if self.left:
-            self.left.clear_evaluation()
+            self.left.clear_evaluation(ratio=ratio)
         if self.right:
-            self.right.clear_evaluation()
+            self.right.clear_evaluation(ratio=ratio)
 
     def is_evaluated(self):
         """
-        Returns true if this node and all its children are evaluated. A node is evaluated if it has true class values and predicted class values.
+        Returns true if the current node and all its children are evaluated. A node is evaluated if it has true class values and predicted class values.
 
         Returns:
-            bool: True if this node and all its children are evaluated.
+            bool: True if the current node and all its children are evaluated.
         """
         if len(self.y_pred) == 0 and len(self.y_true) == 0:
             return False
@@ -283,12 +287,12 @@ class Node:
             print(e)
             return -1
 
-    def calculate_prediction_ratio(self, ratio_scope, classes):
+    def calculate_prediction_ratio(self, scope, classes):
         """
-        Calculates the prediction ratio for this node. The prediction ratio is the ratio of the predicted class values to the total number of instances in the node. The prediction ratio is stored in the prediction_ratio attribute.
+        Calculates the prediction ratio for the current node. The prediction ratio is the ratio of the predicted class values to the total number of instances in the node. The prediction ratio is stored in the prediction_ratio attribute.
 
         Args:
-            ratio_scope (str): Scope of the prediction ratio. 'local' calculates the prediction ratio only for this node. 'global' calculates the prediction ratio for this node and its parent nodes.
+            scope (str): Scope of the prediction ratio. 'local' calculates the prediction ratio based on the current node only. 'inherit' calculates the prediction ratio based on the current node and its parent nodes. 'global' calculates the prediction ratio based on the current node and the root node.
             classes (list): List of class indexes.
         """
         for cls in classes:
@@ -298,58 +302,47 @@ class Node:
         for cls in set(self.y_pred):
             self.predictions[cls] = self.y_pred.count(cls)
 
-        if ratio_scope == 'local':
+        # Local prediction ratio
+        if scope == 'local':
             for cls in set(self.y_pred):
                 self.prediction_ratio[cls] = self.y_pred.count(
                     cls) / len(self.y_pred)
-        if ratio_scope == 'global':
+
+        # Inherit prediction ratio
+        if scope == 'inherit':
+            for cls in set(self.y_pred):
+                if not self.parent:
+                    self.prediction_ratio[cls] = 2 * self.y_pred.count(
+                        cls) / len(self.y_pred)
+                else:
+                    root = self.get_root()
+                    self.prediction_ratio[cls] = self.y_pred.count(
+                        cls) / len(self.y_pred) + self.y_pred.count(cls) / root.y_pred.count(cls) + self.y_pred.count(cls) / len(self.parent.y_pred) * self.parent.prediction_ratio[cls]
+
+        # Global prediction ratio
+        if scope == 'global':
             for cls in set(self.y_pred):
                 if not self.parent:
                     self.prediction_ratio[cls] = self.y_pred.count(
-                        cls) / len(self.y_pred)
+                        cls) / len(self.y_pred) + self.y_pred.count(cls) / self.y_pred.count(cls)
                 else:
+                    root = self.get_root()
                     self.prediction_ratio[cls] = self.y_pred.count(
-                        cls) / len(self.y_pred) + self.parent.calculate_prediction_global(cls, len(self.y_pred), f'{self.y_pred.count(cls)} / {len(self.y_pred)} + ')
+                        cls) / len(self.y_pred) + self.y_pred.count(cls) / root.y_pred.count(cls)
 
+        # Normalise the prediction ratio
+        if scope != 'local':
+            sum_prediction_ratio = sum(
+                [self.prediction_ratio[cls] for cls in self.prediction_ratio if self.prediction_ratio[cls] != 0])
+            for cls in self.prediction_ratio:
+                if self.prediction_ratio[cls] != 0:
+                    self.prediction_ratio[cls] /= sum_prediction_ratio
+
+        # Recursively calculate the prediction ratio for the children nodes
         if self.left:
-            self.left.calculate_prediction_ratio(ratio_scope, classes)
+            self.left.calculate_prediction_ratio(scope, classes)
         if self.right:
-            self.right.calculate_prediction_ratio(ratio_scope, classes)
-
-    def calculate_prediction_global(self, cls, instances=None, formula=''):
-        """
-        Helper function for calculate_prediction_ratio. Recursively gathers the prediction ratio of the parent nodes.
-
-        Args:
-            cls (int): Class index.
-            instances (int): Number of instances in the child node.
-        """
-        if self.parent:
-            formula += f'{self.y_pred.count(cls)} / {len(self.y_pred)} * {instances} / {len(self.y_pred)} + '
-            return self.y_pred.count(cls) / len(self.y_pred) * instances / len(self.y_pred) + self.parent.calculate_prediction_global(cls, instances, formula)
-        formula += f'{instances} / {len(self.y_pred)} * {self.y_pred.count(cls)} / {len(self.y_pred)}'
-        return instances / len(self.y_pred) * (self.y_pred.count(cls) / len(self.y_pred))
-
-    def normalise_prediction_ratio(self, ratio_scope):
-        """
-        Normalises the prediction ratio for this node. The prediction ratio is normalised to the range [0, 1]. The normalised prediction ratio is stored in the prediction_ratio attribute.
-
-        Args:
-            ratio_scope (str): Scope of the prediction ratio. 'local' calculates the prediction ratio only for this node. 'global' calculates the prediction ratio for this node and its parent nodes.
-        """
-        if ratio_scope == 'local':
-            return
-
-        sum_prediction_ratio = sum([self.prediction_ratio[cls]
-                                   for cls in self.prediction_ratio if self.prediction_ratio[cls] != 0])
-        for cls in self.prediction_ratio:
-            if self.prediction_ratio[cls] != 0:
-                self.prediction_ratio[cls] /= sum_prediction_ratio
-
-        if self.left:
-            self.left.normalise_prediction_ratio(ratio_scope)
-        if self.right:
-            self.right.normalise_prediction_ratio(ratio_scope)
+            self.right.calculate_prediction_ratio(scope, classes)
 
     def apply_prediction_ratio(self):
         """
@@ -366,10 +359,10 @@ class Node:
 
     def __str__(self):
         """
-        Returns a string representation of this node.
+        Returns a string representation of the current node.
 
         Returns:
-            str: String representation of this node.
+            str: String representation of the current node.
         """
         if self.att_index == -1:
             # Assuming att_value is a numeric index
@@ -380,9 +373,9 @@ class Node:
 
     def __repr__(self):
         """
-        Returns a string representation of this node.
+        Returns a string representation of the current node.
 
         Returns:
-            str: String representation of this node.
+            str: String representation of the current node.
         """
         return self.__str__()
