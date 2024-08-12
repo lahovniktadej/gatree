@@ -126,46 +126,48 @@ y_pred = gatree.predict(X_test)
 
 To test the performance of the _GATree_ classifier, we conducted a series of experiments on the _adult_ dataset. The _adult_ dataset contains 48.842 instances with 14 attributes (e.g., sex, age, native country, marital status, education, work class, occupation, etc.). The outcome variable is the income level, which is divided into two classes: <=50K and >50K (binary outcome, suitable for classification tasks). The dataset is imbalanced, with 76% of instances belonging to the <=50K class and 24% to the >50K class.
 
-We evaluated the classifier's accuracy and F1-score across 100 runs with different parameter settings (see \autoref{tab:experiment_results}) and compared the results with other classifiers, such as _DecisionTreeClassifier_[^8] (scikit-learn) and _SymbolicClassifier_[^9] (gplearn). The _DecisionTreeClassifier_ is a standard decision tree classifier, while the _SymbolicClassifier_ is a symbolic regression classifier that uses genetic programming to evolve symbolic expressions.
+We evaluated the classifier's accuracy and F1-score across 100 runs with different parameter settings (see \autoref{tab:experiment_results}) and compared the results with other classifiers, such as _DecisionTreeClassifier_[^8] (scikit-learn) and _SymbolicClassifier_[^9] (gplearn). The _DecisionTreeClassifier_ is a standard decision tree classifier, while the _SymbolicClassifier_ is a symbolic regression classifier that uses genetic programming to evolve symbolic expressions. The code used to conduct the experiment is available in the _GATree_ repository[^10].
 
 [^8]: \url{https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html}
 [^9]: \url{https://gplearn.readthedocs.io/en/stable/reference.html\#symbolic-classifier}
+[^10]: \url{https://github.com/lahovniktadej/gatree/blob/main/examples/joss_experiment.py}
 
 The results demonstrate that _GATree_ achieves competitive performance in terms of accuracy and F1-score. _GATree_'s performance improves with more generations and higher population sizes, indicating the importance of these parameters in the evolutionary process.
 
 :Results of the conducted experiment.\label{tab:experiment_results}
 
-+------------------------+-----------------------------+-----------+-----------+
-| Classifier             | Parameters                  | Avg. max\ | Avg. max\ |
-|                        |                             | accuracy  | F1-score  |
-+========================+=============================+===========+:==========+
-| GATree                 | mutation_probability=0.10\  | 0.799     | 0.351     |
-|                        | population_size=25\         |           |           |
-|                        | elite_size=1\               |           |           |
-|                        | max_depth=5\                |           |           |
-|                        | max_iter=50\                |           |           |
-+------------------------+-----------------------------+-----------+-----------+
-| GATree                 | mutation_probability=0.15\  | 0.807     | 0.379     |
-|                        | population_size=50\         |           |           |
-|                        | elite_size=2\               |           |           |
-|                        | max_depth=5\                |           |           |
-|                        | max_iter=100\               |           |           |
-+------------------------+-----------------------------+-----------+-----------+
-| GATree                 | mutation_probability=0.20\  | 0.810     | 0.392     |
-|                        | population_size=50\         |           |           |
-|                        | elite_size=5\               |           |           |
-|                        | max_depth=5\                |           |           |
-|                        | max_iter=200\               |           |           |
-+------------------------+-----------------------------+-----------+-----------+
-| DecisionTreeClassifier | criterion='gini'            | 0.806     | 0.451     |
-|                        | splitter='random'\          |           |           |
-|                        | max_depth=5\                |           |           |
-+------------------------+-----------------------------+-----------+-----------+
-| SymbolicClassifier     | parsimony_coefficient=0.01\ | 0.739     | 0.034     |
-|                        | population_size=50\         |           |           |
-|                        | generations=100\            |           |           |
-|                        | init_depth=\(5, 5)          |           |           |
-+------------------------+-----------------------------+-----------+-----------+
++------------------------+-----------------------------+----------------+----------------+
+| Classifier             | Parameters                  | Avg. max\      | Avg. max\      |
+|                        |                             | accuracy\      | F1-score\      |
+|                        |                             | (95% CI)       | (95% CI)       |
++========================+=============================+================+:===============+
+| GATree                 | mutation_probability=0.10\  | 0.800\         | 0.351\         |
+|                        | population_size=25\         | (0.799, 0.801) | (0.341, 0.362) |
+|                        | elite_size=1\               |                |                |
+|                        | max_depth=5\                |                |                |
+|                        | max_iter=50\                |                |                |
++------------------------+-----------------------------+----------------+----------------+
+| GATree                 | mutation_probability=0.15\  | 0.807\         | 0.379\         |
+|                        | population_size=50\         | (0.806, 0.809) | (0.368, 0.390) |
+|                        | elite_size=2\               |                |                |
+|                        | max_depth=5\                |                |                |
+|                        | max_iter=100\               |                |                |
++------------------------+-----------------------------+----------------+----------------+
+| GATree                 | mutation_probability=0.20\  | 0.810\         | 0.392\         |
+|                        | population_size=50\         | (0.808, 0.811) | (0.382, 0.403) |
+|                        | elite_size=5\               |                |                |
+|                        | max_depth=5\                |                |                |
+|                        | max_iter=200\               |                |                |
++------------------------+-----------------------------+----------------+----------------+
+| DecisionTreeClassifier | criterion='gini'            | 0.806\         | 0.451\         |
+|                        | splitter='random'\          | (0.804, 0.806) | (0.430, 0.473) |
+|                        | max_depth=5\                |                |                |
++------------------------+-----------------------------+----------------+----------------+
+| SymbolicClassifier     | parsimony_coefficient=0.01\ | 0.739\         | 0.034\         |
+|                        | population_size=50\         | (0.722, 0.756) | (0.013, 0.055) |
+|                        | generations=100\            |                |                |
+|                        | init_depth=\(5, 5)          |                |                |
++------------------------+-----------------------------+----------------+----------------+
 
 \newpage
 
