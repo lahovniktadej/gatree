@@ -30,6 +30,9 @@
     <a href="https://zenodo.org/doi/10.5281/zenodo.13307403">
         <img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.13307404.svg">
     </a>
+    <a href="https://doi.org/10.21105/joss.06748">
+        <img alt="JOSS" src="https://joss.theoj.org/papers/10.21105/joss.06748/status.svg">
+    </a>
 </p>
 
 <p align="center">
