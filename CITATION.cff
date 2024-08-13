@@ -1,0 +1,32 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Lahovnik
+  given-names: Tadej
+  orcid: "https://orcid.org/0009-0005-9689-2991"
+- family-names: Karakatič
+  given-names: Sašo
+  orcid: "https://orcid.org/0000-0003-4441-9690"
+doi: 10.5281/zenodo.13307404
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Lahovnik
+    given-names: Tadej
+    orcid: "https://orcid.org/0009-0005-9689-2991"
+  - family-names: Karakatič
+    given-names: Sašo
+    orcid: "https://orcid.org/0000-0003-4441-9690"
+  date-published: 2024-08-12
+  doi: 10.21105/joss.06748
+  issn: 2475-9066
+  issue: 100
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 6748
+  title: "GATree: Evolutionary decision tree classifier in Python"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.06748"
+  volume: 9
+title: "GATree: Evolutionary decision tree classifier in Python"
