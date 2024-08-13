@@ -6,7 +6,7 @@
     <img alt="PyPI version" src="https://img.shields.io/pypi/v/gatree.svg" />
     <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/gatree.svg">
     <a href="https://pepy.tech/project/gatree">
-        <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/niaaml.svg">
+        <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/gatree.svg">
     </a>
     <img alt="Downloads" src="https://pepy.tech/badge/gatree">
     <img alt="GATree" src="https://github.com/lahovniktadej/gatree/actions/workflows/test.yml/badge.svg" />
