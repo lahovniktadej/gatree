@@ -27,6 +27,12 @@
 </p>
 
 <p align="center">
+    <a href="https://zenodo.org/doi/10.5281/zenodo.13307403">
+        <img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.13307404.svg">
+    </a>
+</p>
+
+<p align="center">
     <a href="#-about">📋 About </a>  •
     <a href="#-installation">📦 Installation</a> •
     <a href="#-usage">🚀 Usage</a> •
