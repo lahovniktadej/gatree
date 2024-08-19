@@ -9,14 +9,12 @@ tags:
 authors:
   - name: Tadej Lahovnik
     orcid: 0009-0005-9689-2991
-    equal-contrib: true
     affiliation: 1
   - name: Sašo Karakatič
     orcid: 0000-0003-4441-9690
-    equal-contrib: true
     affiliation: 1
 affiliations:
-  - name: University of Maribor, Maribor, Slovenia
+  - name: University of Maribor, Faculty of Electrical Engineering and Computer Science
     index: 1
 date: 06 March 2024
 bibliography: paper.bib
@@ -170,5 +168,9 @@ The results demonstrate that _GATree_ achieves competitive performance in terms 
 +------------------------+-----------------------------+----------------+----------------+
 
 \newpage
+
+# Acknowledgements
+
+The authors acknowledge the financial support from the Slovenian Research and Innovation Agency (research core funding No. P2-0057).
 
 # References
