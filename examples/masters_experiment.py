@@ -86,8 +86,8 @@ def evaluate_classifier(run, fold, clf_name, clf_class, clf_params, X_train, X_t
         'accuracy_majority': accuracy_score(y_test[y_test == 0], y_pred[y_test == 0]),
         'accuracy_minority': accuracy_score(y_test[y_test == 1], y_pred[y_test == 1]),
         'f1_macro': f1_score(y_test, y_pred, average='macro'),
-        'f1_majority': f1_score(y_test[y_test == 0], y_pred[y_test == 0], zero_division=0),
-        'f1_minority': f1_score(y_test[y_test == 1], y_pred[y_test == 1], zero_division=0)
+        'f1_majority': f1_score(y_test, y_pred, average=None)[0],
+        'f1_minority': f1_score(y_test, y_pred, average=None)[1]
     }
 
 
