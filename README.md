@@ -1,3 +1,7 @@
+<p align="center">
+    <img alt="GATree" src=".github/images/gatree.png" width="175" />
+</p>
+
 <h1 align="center">
     GATree
 </h1>
