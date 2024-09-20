@@ -53,9 +53,9 @@ html_theme = 'sphinx_rtd_theme'
 # html_static_path = ['_static']
 
 # Add logo for project
-""" html_logo = '../.github/images/logo.png'
+html_logo = '../.github/images/gatree.png'
 html_theme_options = {
-    'logo_only': True,
+    'logo_only': False,
     'display_version': False,
 }
- """
+
