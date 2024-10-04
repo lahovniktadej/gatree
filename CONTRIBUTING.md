@@ -27,7 +27,7 @@ If you find a bug, please open an issue and tag it with `bug`. The issue should 
 - your operating system name and version,
 - GATree version or commit hash,
 - a short, descriptive title,
-- details steps required to reproduce the bug, and
+- steps required to reproduce the bug, and
 - details about your local environment that might be helpful in troubleshooting the issue (e.g. Python version, etc.).
 
 Please use [Markdown code blocks](https://help.github.com/articles/creating-and-highlighting-code-blocks) when posting Python stack traces to improve readability.
