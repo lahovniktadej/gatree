@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📄 Documentation
+    url: https://gatree.readthedocs.io/en/latest
+    about: For more information about the package, visit the documentation.
