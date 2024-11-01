@@ -247,13 +247,14 @@ class Node:
 
         return left_evaluated or right_evaluated
 
-    def predict_one(self, X, y=None):
+    def predict_one(self, X, y=None, train=False):
         """
         Predicts the class of the given instance. If the actual class is provided, the true class value and predicted class value are stored for evaluation.
 
         Args:
             X (list): Instance to be predicted.
             y (int): Actual class of the given instance.
+            train (bool): If it's used for training or only predicting
 
         Returns:
             int: Predicted class.
@@ -269,8 +270,9 @@ class Node:
             else:
                 predicted = int(self.att_value)
 
-            if y is not None:
-                self.y_true.append(int(y))
+            if train is True:
+                if y is not None:
+                    self.y_true.append(int(y))
                 self.y_pred.append(predicted)
 
             return predicted

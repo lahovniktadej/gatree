@@ -1,15 +1,11 @@
 import numpy as np
-from joblib import Parallel, delayed
-from sklearn.metrics import accuracy_score
+from sklearn.base import BaseEstimator
 
 # GATree
 from gatree.tree.node import Node
-from gatree.ga.selection import Selection
-from gatree.ga.crossover import Crossover
-from gatree.ga.mutation import Mutation
 
 
-class GATree():
+class GATree(BaseEstimator):
     """
     Evolutionary decision tree classifier. The GATree classifier is a decision tree classifier that is trained using a genetic algorithm. The genetic algorithm is used to evolve a population of trees over multiple generations. The fitness of each tree is evaluated using a fitness function, which is used to select the best trees for crossover and mutation.
 
@@ -67,10 +63,10 @@ class GATree():
         Returns:
             float: The fitness value.
         """
-        return 1 - accuracy_score(root.y_true, root.y_pred) + (0.002 * root.size())
+        pass
 
     @staticmethod
-    def _predict_and_evaluate(tree, X, y, fitness_function):
+    def _predict_and_evaluate(tree, X, y, fitness_function, is_training=False):
         """
         Evaluate a tree on a training set (in parallel).
 
@@ -79,13 +75,14 @@ class GATree():
             X (pandas.DataFrame): Training data.
             y (pandas.Series): Target values.
             fitness_function (function): Fitness function for the genetic algorithm.
+            is_training (bool): If the instances are used for training or predicting.
 
         Returns:
             Node: The evaluated tree.
         """
         for j in range(X.shape[0]):
             # Predict class for current instance
-            tree.predict_one(X.iloc[j], y.iloc[j])
+            tree.predict_one(X.iloc[j], y.iloc[j], is_training)
         tree.fitness = fitness_function(tree)
         return tree
 
@@ -105,76 +102,7 @@ class GATree():
         Returns:
             Node: The fitted tree.
         """
-        self.X = X
-        self.y = y
-        self.att_indexes = np.arange(X.shape[1])
-        self.att_values = {i: [(min_val + max_val) / 2 for min_val, max_val in zip(sorted(
-            X.iloc[:, i].unique())[:-1], sorted(X.iloc[:, i].unique())[1:])] for i in range(X.shape[1])}
-        self.att_values[-1] = sorted(y.unique())
-        self.class_count = len(self.att_values[-1])
-
-        # Generation of initial population
-        node = Node()
-        population = []
-        for _ in range(population_size):
-            population.append(node.make_node(max_depth=self.max_depth, random=self.random,
-                              att_indexes=self.att_indexes, att_values=self.att_values, class_count=self.class_count))
-
-        for i in range(max_iter+1):
-            # Clear previous evaluation
-            for tree in population:
-                tree.clear_evaluation()
-
-            # Evaluation of population
-            population = Parallel(n_jobs=self.n_jobs)(delayed(GATree._predict_and_evaluate)(
-                tree, X, y, self.fitness_function) for tree in population)
-
-            # Sort population by fitness
-            population.sort(key=lambda x: x.fitness, reverse=False)
-
-            # Log best and average fitness
-            self._best_fitness.append(population[0].fitness)
-            self._avg_fitness.append(
-                sum([tree.fitness for tree in population]) / len(population))
-
-            if i != max_iter:
-                # Elites
-                elites = population[:elite_size]
-
-                # Descendant generation
-                descendant = []
-                for _ in range(0, len(population), 2):
-                    # Tournament selection
-                    tree1, tree2 = Selection.selection(
-                        population=population, selection_tournament_size=selection_tournament_size, random=self.random)
-
-                    # Crossover between selected trees
-                    crossover1 = Crossover.crossover(
-                        tree1=tree1, tree2=tree2, random=self.random)
-                    crossover2 = Crossover.crossover(
-                        tree1=tree2, tree2=tree1, random=self.random)
-
-                    # Mutation of new trees
-                    mutation1 = crossover1
-                    mutation2 = crossover2
-                    if self.random.random() < mutation_probability:
-                        mutation1 = Mutation.mutation(root=crossover1, att_indexes=self.att_indexes,
-                                                      att_values=self.att_values, class_count=self.class_count, random=self.random)
-                    if self.random.random() < mutation_probability:
-                        mutation2 = Mutation.mutation(root=crossover2, att_indexes=self.att_indexes,
-                                                      att_values=self.att_values, class_count=self.class_count, random=self.random)
-
-                    # Add new trees to descendant population
-                    descendant.extend([mutation1, mutation2])
-
-                # Elites + descendants
-                descendant.sort(key=lambda x: x.fitness, reverse=False)
-                descendant = elites + descendant[:population_size - elite_size]
-
-                # Replace old population with new population
-                population = descendant
-
-        self._tree = population[0]
+        pass
 
     def predict(self, X):
         """
