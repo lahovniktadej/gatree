@@ -3,14 +3,14 @@ Example of plotting the final decision
 tree after fitting the model.
 """
 
-from gatree.gatree import GATree
+from gatree.methods.gatreeclassifier import GATreeClassifier
 import pandas as pd
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
 if __name__ == '__main__':
     # Initialise the tree
-    gatree = GATree()
+    gatree = GATreeClassifier()
 
     # Load the iris dataset and split it into X and y
     iris = datasets.load_iris()
