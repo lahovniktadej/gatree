@@ -76,7 +76,7 @@ import pandas as pd
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-from gatree.gatree import GATree
+from gatree.methods.gatreeclassifier import GATreeClassifier
 
 # Load the iris dataset
 iris = load_iris()
@@ -85,10 +85,10 @@ y = pd.Series(iris.target, name='target')
 
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=123)
+    X, y, test_size=0.2, random_state=¸10)
 
 # Create and fit the GATree classifier
-gatree = GATree(n_jobs=16, random_state=123)
+gatree = GATreeClassifier(n_jobs=16, random_state=32)
 gatree.fit(X=X_train, y=y_train, population_size=100, max_iter=100)
 
 # Make predictions on the testing set

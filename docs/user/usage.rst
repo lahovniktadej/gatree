@@ -35,7 +35,7 @@ The following example demonstrates how to perform classification of the iris dat
         X, y, test_size=0.2, random_state=10)
 
     # Create and fit the GATree classifier
-    gatree = GATreeClassifier(n_jobs=16, random_state=10)
+    gatree = GATreeClassifier(n_jobs=16, random_state=32)
     gatree.fit(X=X_train, y=y_train, population_size=100, max_iter=100)
 
     # Make predictions on the testing set
