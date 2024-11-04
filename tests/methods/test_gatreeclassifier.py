@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from gatree.gatree import GATree
+from gatree.methods.gatreeclassifier import GATreeClassifier
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 
@@ -23,7 +23,7 @@ class TestGATree(unittest.TestCase):
         )
 
         # Create a GATree instance
-        gatree = GATree(max_depth=5)
+        gatree = GATreeClassifier(max_depth=5)
 
         # Fit the model
         gatree.fit(X=X_train, y=y_train, population_size=10, max_iter=10,
@@ -48,7 +48,7 @@ class TestGATree(unittest.TestCase):
         )
 
         # Create a GATree instance
-        gatree = GATree(max_depth=5)
+        gatree = GATreeClassifier(max_depth=5)
 
         # Fit the model
         gatree.fit(X=X_train, y=y_train, population_size=10, max_iter=10,
