@@ -15,7 +15,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
-from gatree.gatree import GATree
+from gatree.methods.gatreeclassifier import GATreeClassifier
 
 # Load the adult dataset
 adult = fetch_adult(numeric_only=True)
@@ -56,7 +56,7 @@ def evaluate_classifier(clf_class, clf_params, X_train, X_test, y_train, y_test,
 # Dictionary of classifiers and their parameters
 classifiers = {
     'GATree (configuration 1)': {
-        'class': GATree,
+        'class': GATreeClassifier,
         'params': {
             'max_depth': 5,
             'n_jobs': 16
@@ -69,7 +69,7 @@ classifiers = {
         }
     },
     'GATree (configuration 2)': {
-        'class': GATree,
+        'class': GATreeClassifier,
         'params': {
             'max_depth': 5,
             'n_jobs': 16
@@ -82,7 +82,7 @@ classifiers = {
         }
     },
     'GATree (configuration 3)': {
-        'class': GATree,
+        'class': GATreeClassifier,
         'params': {
             'max_depth': 5,
             'n_jobs': 16

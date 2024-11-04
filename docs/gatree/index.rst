@@ -2,9 +2,8 @@ GATree
 ======
 
 .. toctree::
+   :maxdepth: 2
 
-   gatree
-   node
-   selection
-   crossover
-   mutation
+   methods/methods
+   tree/node
+   ga/ga

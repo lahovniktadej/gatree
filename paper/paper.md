@@ -128,7 +128,7 @@ We evaluated the classifier's accuracy and F1-score across 100 runs with differe
 
 [^8]: \url{https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html}
 [^9]: \url{https://gplearn.readthedocs.io/en/stable/reference.html\#symbolic-classifier}
-[^10]: \url{https://github.com/lahovniktadej/gatree/blob/main/examples/joss_experiment.py}
+[^10]: \url{https://github.com/lahovniktadej/gatree/blob/main/examples/classification/joss_experiment.py}
 
 The results demonstrate that _GATree_ achieves competitive performance in terms of accuracy and F1-score. _GATree_'s performance improves with more generations and higher population sizes, indicating the importance of these parameters in the evolutionary process.
 
