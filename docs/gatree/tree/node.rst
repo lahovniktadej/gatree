@@ -1,4 +1,4 @@
-Node
+Tree
 ====
 
 .. automodule:: gatree.tree.node
