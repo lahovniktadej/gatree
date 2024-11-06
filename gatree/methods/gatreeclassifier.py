@@ -51,7 +51,7 @@ class GATreeClassifier(ClassifierMixin, GATree):
         super().__init__(max_depth, random, fitness_function, n_jobs, random_state)
 
     @staticmethod
-    def default_fitness_function(root):
+    def default_fitness_function(root, **fitness_function_kwargs):
         """
         Default fitness function for the genetic algorithm.
 
@@ -63,7 +63,8 @@ class GATreeClassifier(ClassifierMixin, GATree):
         """
         return 1 - accuracy_score(root.y_true, root.y_pred) + (0.002 * root.size())
 
-    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1, selection_tournament_size=2):
+    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1,
+            selection_tournament_size=2, fitness_function_kwargs={}):
         """
         Fit a tree to a training set. The population size, maximum iterations, mutation probability, elite size, and selection tournament size can be specified.
 
@@ -75,6 +76,7 @@ class GATreeClassifier(ClassifierMixin, GATree):
             mutation_probability (float, optional): Probability of mutation.
             elite_size (int, optional): Number of elite trees.
             selection_tournament_size (int, optional): Number of trees in tournament.
+            fitness_function_kwargs (dict, optional): Additional kwargs to be passed to the fitness_funciton.
 
         Returns:
             Node: The fitted tree.
@@ -101,7 +103,7 @@ class GATreeClassifier(ClassifierMixin, GATree):
 
             # Evaluation of population
             population = Parallel(n_jobs=self.n_jobs)(delayed(GATreeClassifier._predict_and_evaluate)(
-                tree, X, y, self.fitness_function, True) for tree in population)
+                tree, X, y, self.fitness_function, True, **fitness_function_kwargs) for tree in population)
 
             # Sort population by fitness
             population.sort(key=lambda x: x.fitness, reverse=False)
