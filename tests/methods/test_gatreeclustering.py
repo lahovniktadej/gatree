@@ -55,7 +55,7 @@ class TestGATreeClustering(unittest.TestCase):
             min_clusters=min_clusters, max_clusters=max_clusters)
 
         # Fit the model
-        gatree.fit(X=X_train, population_size=10, max_iter=10,
+        gatree.fit(X=X_train, population_size=25, max_iter=25,
                    mutation_probability=0.25, elite_size=2, selection_tournament_size=2,
                    fitness_function_kwargs=fitness_function_kwargs
                    )
@@ -96,7 +96,7 @@ class TestGATreeClustering(unittest.TestCase):
             min_clusters=min_clusters, max_clusters=max_clusters)
 
         # Fit the model
-        gatree.fit(X=X_train, population_size=10, max_iter=10,
+        gatree.fit(X=X_train, population_size=25, max_iter=25,
                    mutation_probability=0.25, elite_size=2, selection_tournament_size=2,
                    fitness_function_kwargs=fitness_function_kwargs)
 
