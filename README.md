@@ -12,7 +12,7 @@
     <a href="https://pepy.tech/project/gatree">
         <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/gatree.svg">
     </a>
-    <img alt="Downloads" src="https://pepy.tech/badge/gatree">
+    <img alt="Downloads" src="https://static.pepy.tech/badge/gatree">
     <img alt="GATree" src="https://github.com/lahovniktadej/gatree/actions/workflows/test.yml/badge.svg" />
     <img alt="Documentation status" src="https://readthedocs.org/projects/gatree/badge/?version=latest" />
 </p>
@@ -49,11 +49,11 @@
 </p>
 
 ## 📋 About
-GATree is a Python library designed for implementing evolutionary decision trees using a standard genetic algorithm approach. The library provides functionalities for selection, mutation, and crossover operations within the decision tree structure, allowing users to evolve and optimise decision trees for various classification tasks. 🌲🧬
+GATree is a Python library designed for implementing evolutionary decision trees using a standard genetic algorithm approach. The library provides functionalities for selection, mutation, and crossover operations within the decision tree structure, allowing users to evolve and optimise decision trees for various classification and clustering tasks. 🌲🧬
 
-The library's core objective is to empower users in creating and fine-tuning decision trees through an evolutionary process, opening avenues for innovative approaches to classification problems. GATree enables the dynamic growth and adaptation of decision trees, offering a flexible and powerful tool for machine learning enthusiasts and practitioners. 🚀🌿
+The library's core objective is to empower users in creating and fine-tuning decision trees through an evolutionary process, opening avenues for innovative approaches to classification and clustering problems. GATree enables the dynamic growth and adaptation of decision trees, offering a flexible and powerful tool for machine learning enthusiasts and practitioners. 🚀🌿
 
-GATree is currently limited to classification tasks, with support for regression tasks planned for future releases. 💡
+GATree is currently limited to classification and clustering tasks, with support for regression tasks planned for future releases. 💡
 
 * **Free software:** MIT license
 * **Documentation**: [http://gatree.readthedocs.io](http://gatree.readthedocs.io)
@@ -102,17 +102,17 @@ print(accuracy_score(y_test, y_pred))
 The genetic algorithm for decision trees in `GATree` involves several key operators: _selection_, _elitism_, _crossover_, and _mutation_. Each of these operators plays a crucial role in the evolution and optimisation of the decision trees. Below is a detailed description of each operator within the context of the `GATree` class.
 
 ### Selection
-**Selection** is the process of choosing parent trees from the current population to produce offspring for the next generation. By default, `GATree` class uses tournament selection, a method where a subset of the population is randomly chosen, and the best individual from this subset is selected.
+Selection is the process of choosing parent trees from the current population to produce offspring for the next generation. By default, `GATree` class uses tournament selection, a method where a subset of the population is randomly chosen, and the best individual from this subset is selected.
 
 ### Elitism
-**Elitism** ensures that the best-performing individuals (trees) from the current generation are carried over to the next generation without any modification. This guarantees that the quality of the population does not decrease from one generation to the next.
+Elitism ensures that the best-performing individuals (trees) from the current generation are carried over to the next generation without any modification. This guarantees that the quality of the population does not decrease from one generation to the next.
 
 ### Crossover
 
-**Crossover** is a genetic operator used to combine the genetic information of two parent trees to generate new offspring. This enables exploration, which helps in creating diversity in the population and combining good traits from both parents.
+Crossover is a genetic operator used to combine the genetic information of two parent trees to generate new offspring. This enables exploration, which helps in creating diversity in the population and combining good traits from both parents.
 
 ### Mutation
-**Mutation** introduces random changes to a tree to maintain genetic diversity and explore new solutions. This helps in avoiding local optima by introducing new genetic structures.
+Mutation introduces random changes to a tree to maintain genetic diversity and explore new solutions. This helps in avoiding local optima by introducing new genetic structures.
 
 ## 🫂 Community Guidelines
 ### Contributing

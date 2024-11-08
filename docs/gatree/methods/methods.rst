@@ -8,3 +8,7 @@ Methods
 .. automodule:: gatree.methods.gatreeclassifier
    :members:
    :show-inheritance:
+
+.. automodule:: gatree.methods.gatreeclustering
+   :members:
+   :show-inheritance:
