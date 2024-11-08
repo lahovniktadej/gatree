@@ -1,7 +1,8 @@
 import numpy as np
+import pandas as pd
 from joblib import Parallel, delayed
-from sklearn.metrics import accuracy_score
-from sklearn.base import ClassifierMixin
+from sklearn.metrics import silhouette_score
+from sklearn.base import ClusterMixin
 
 # GATree
 from gatree.tree.node import Node
@@ -11,9 +12,12 @@ from gatree.ga.mutation import Mutation
 from gatree.gatree import GATree
 
 
-class GATreeClassifier(ClassifierMixin, GATree):
+class GATreeClustering(ClusterMixin, GATree):
     """
-    Evolutionary decision tree classifier. The GATree classifier is a decision tree classifier that is trained using a genetic algorithm. The genetic algorithm is used to evolve a population of trees over multiple generations. The fitness of each tree is evaluated using a fitness function, which is used to select the best trees for crossover and mutation.
+    Evolutionary decision tree clustering. The GATree clustering is a decision tree clustering that is trained using a
+    genetic algorithm. The genetic algorithm is used to evolve a population of trees over multiple generations.
+    The fitness of each tree is evaluated using a fitness function, which is used to select the best trees for
+    crossover and mutation.
 
     Args:
         max_depth (int, optional): Maximum depth of the tree.
@@ -21,6 +25,8 @@ class GATreeClassifier(ClassifierMixin, GATree):
         fitness_function (function, optional): Fitness function for the genetic algorithm.
         n_jobs (int, optional): Number of jobs to run in parallel.
         random_state (int, optional): Seed for reproducibility.
+        min_clusters (int, optional): Number of minimum clusters.
+        max_clusters (int, optional): Number of maximum clusters.
 
     Attributes:
         max_depth (int, optional): Maximum depth of the tree.
@@ -33,22 +39,29 @@ class GATreeClassifier(ClassifierMixin, GATree):
         fitness_function (function): Fitness function for the genetic algorithm.
         n_jobs (int): Number of jobs to run in parallel.
         random_state (int): Seed for reproducibility.
+        min_clusters (int): Number of minimum clusters.
+        max_clusters (int): Number of maximum clusters.
         _tree (Node): The fitted tree.
         _best_fitness (list): List of best fitness values for each iteration.
         _avg_fitness (list): List of average fitness values for each iteration.
     """
 
-    def __init__(self, max_depth=None, random=None, fitness_function=None, n_jobs=1, random_state=None):
+    def __init__(self, max_depth=None, random=None, fitness_function=None, n_jobs=1, random_state=None, min_clusters=2,
+                 max_clusters=10):
         """
-        Initialise the Genetic Algorithm Tree Classifier. Maximum depth, random number generator, fitness function, number of jobs, and random state can be specified.
+        Initialise the Genetic Algorithm Tree Clustering. Maximum depth, random number generator, fitness function, number of jobs, and random state can be specified.
 
         Args:
             max_depth (int, optional): Maximum depth of the tree.
             random (Random, optional): Random number generator.
             fitness_function (function, optional): Fitness function for the genetic algorithm.
             random_state (int, optional): Seed reproducibility.
+            min_clusters (int, optional): Minimum number of clusters.
+            max_clusters (int, optional): Maximum number of clusters.
         """
         super().__init__(max_depth, random, fitness_function, n_jobs, random_state)
+        self.min_clusters = min_clusters
+        self.max_clusters = max_clusters
 
     @staticmethod
     def default_fitness_function(root, **fitness_function_kwargs):
@@ -61,9 +74,12 @@ class GATreeClassifier(ClassifierMixin, GATree):
         Returns:
             float: The fitness value.
         """
-        return 1 - accuracy_score(root.y_true, root.y_pred) + (0.002 * root.size())
+        if len(set(root.y_pred)) < fitness_function_kwargs['min_clusters']:
+            return 1
 
-    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1,
+        return 1 - ((silhouette_score(fitness_function_kwargs['fitness_X'], root.y_pred) + 1) / 2) + (0.002 * root.size())
+
+    def fit(self, X, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1,
             selection_tournament_size=2, fitness_function_kwargs={}):
         """
         Fit a tree to a training set. The population size, maximum iterations, mutation probability, elite size, and selection tournament size can be specified.
@@ -82,12 +98,13 @@ class GATreeClassifier(ClassifierMixin, GATree):
             Node: The fitted tree.
         """
         self.X = X
-        self.y = y
+        none_series = pd.Series([None] * len(X))
+        self.y = none_series
         self.att_indexes = np.arange(X.shape[1])
         self.att_values = {i: [(min_val + max_val) / 2 for min_val, max_val in zip(sorted(
             X.iloc[:, i].unique())[:-1], sorted(X.iloc[:, i].unique())[1:])] for i in range(X.shape[1])}
-        self.att_values[-1] = sorted(y.unique())
-        self.class_count = len(self.att_values[-1])
+        self.att_values[-1] = list(range(self.max_clusters))
+        self.class_count = self.max_clusters
 
         # Generation of initial population
         node = Node()
@@ -102,8 +119,8 @@ class GATreeClassifier(ClassifierMixin, GATree):
                 tree.clear_evaluation()
 
             # Evaluation of population
-            population = Parallel(n_jobs=self.n_jobs)(delayed(GATreeClassifier._predict_and_evaluate)(
-                tree, X, y, self.fitness_function, True, **fitness_function_kwargs) for tree in population)
+            population = Parallel(n_jobs=self.n_jobs)(delayed(GATreeClustering._predict_and_evaluate)(
+                tree, X, none_series, self.fitness_function, True, **fitness_function_kwargs) for tree in population)
 
             # Sort population by fitness
             population.sort(key=lambda x: x.fitness, reverse=False)

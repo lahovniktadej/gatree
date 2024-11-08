@@ -53,7 +53,7 @@ class GATree(BaseEstimator):
         self._avg_fitness = []
 
     @staticmethod
-    def default_fitness_function(root):
+    def default_fitness_function(root, **fitness_function_kwargs):
         """ 
         Default fitness function for the genetic algorithm.
 
@@ -66,7 +66,7 @@ class GATree(BaseEstimator):
         pass
 
     @staticmethod
-    def _predict_and_evaluate(tree, X, y, fitness_function, is_training=False):
+    def _predict_and_evaluate(tree, X, y, fitness_function, is_training=False, **fitness_function_kwargs):
         """
         Evaluate a tree on a training set (in parallel).
 
@@ -83,10 +83,11 @@ class GATree(BaseEstimator):
         for j in range(X.shape[0]):
             # Predict class for current instance
             tree.predict_one(X.iloc[j], y.iloc[j], is_training)
-        tree.fitness = fitness_function(tree)
+        tree.fitness = fitness_function(tree, **fitness_function_kwargs)
         return tree
 
-    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1, selection_tournament_size=2):
+    def fit(self, X, y, population_size=150, max_iter=2000, mutation_probability=0.1, elite_size=1,
+            selection_tournament_size=2, fitness_function_kwargs={}):
         """
         Fit a tree to a training set. The population size, maximum iterations, mutation probability, elite size, and selection tournament size can be specified.
 
@@ -98,6 +99,7 @@ class GATree(BaseEstimator):
             mutation_probability (float, optional): Probability of mutation.
             elite_size (int, optional): Number of elite trees.
             selection_tournament_size (int, optional): Number of trees in tournament.
+            fitness_function_kwargs (dict, optional): Additional kwargs to be passed to the fitness_funciton.
 
         Returns:
             Node: The fitted tree.
