@@ -10,6 +10,26 @@ class TestGATreeClustering(unittest.TestCase):
     Test GATreeClustering class.
     """
 
+    def get_clusters_from_tree(self, node):
+        """
+        Helper function to get clusters from a tree.
+        """
+        clusters = []
+
+        def traverse(node):
+            # Append attribute value of leaf node
+            if node.att_index == -1:
+                clusters.append(node.att_value)
+            else:
+                # Traverse children nodes
+                if node.left:
+                    traverse(node.left)
+                if node.right:
+                    traverse(node.right)
+
+        traverse(node)
+        return set(clusters)
+
     def test_fit(self):
         """
         Test fit method.
@@ -23,6 +43,7 @@ class TestGATreeClustering(unittest.TestCase):
         )
 
         min_clusters = 5
+        max_clusters = 10
 
         fitness_function_kwargs = {
             'min_clusters': min_clusters,
@@ -30,7 +51,8 @@ class TestGATreeClustering(unittest.TestCase):
         }
 
         # Create a GATree instance
-        gatree = GATreeClustering(min_clusters=min_clusters)
+        gatree = GATreeClustering(
+            min_clusters=min_clusters, max_clusters=max_clusters)
 
         # Fit the model
         gatree.fit(X=X_train, population_size=10, max_iter=10,
@@ -43,6 +65,11 @@ class TestGATreeClustering(unittest.TestCase):
 
         # Assert that the best fitness is not None
         self.assertIsNotNone(gatree._best_fitness)
+
+        # Assert min_clusters <= number of clusters <= max_clusters
+        clusters = len(self.get_clusters_from_tree(gatree._tree))
+        self.assertTrue(clusters >= min_clusters)
+        self.assertTrue(clusters <= max_clusters)
 
     def test_predict(self):
         """
@@ -65,7 +92,8 @@ class TestGATreeClustering(unittest.TestCase):
         }
 
         # Create a GATree instance
-        gatree = GATreeClustering(min_clusters=min_clusters, max_clusters=max_clusters)
+        gatree = GATreeClustering(
+            min_clusters=min_clusters, max_clusters=max_clusters)
 
         # Fit the model
         gatree.fit(X=X_train, population_size=10, max_iter=10,
@@ -83,7 +111,3 @@ class TestGATreeClustering(unittest.TestCase):
 
         # Assert that the prediction is a list of integers
         self.assertIsInstance(y_pred, list)
-
-        self.assertTrue(len(set(gatree._tree.get_root().y_pred)) >= min_clusters)
-
-        self.assertTrue(len(set(gatree._tree.get_root().y_pred)) <= max_clusters)
