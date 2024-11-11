@@ -22,7 +22,7 @@ copyright = '2023, Tadej Lahovnik, Sašo Karakatič'
 author = 'Tadej Lahovnik, Sašo Karakatič'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.5'
+release = '0.2.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -58,4 +58,3 @@ html_theme_options = {
     'logo_only': False,
     'display_version': False,
 }
-
